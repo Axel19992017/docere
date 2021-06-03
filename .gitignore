@@ -1,3 +1,5 @@
 .env
 docere/__pycache__/
 .vscode/
+registration/migrations/__pycache__/
+registration/__pycache__/
