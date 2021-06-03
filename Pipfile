@@ -4,6 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+whitenoise = "*"
+django-environ = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+django-macros = "*"
 
 [dev-packages]
 
