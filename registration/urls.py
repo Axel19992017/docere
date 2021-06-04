@@ -5,6 +5,5 @@ from django.conf.urls import url
 
 
 urlpatterns = [
-    path("", views.index, name="home"),
-    
+    path("accounts/profile/", views.profile, name="myprofile"),
 ]

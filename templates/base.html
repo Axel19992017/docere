@@ -18,8 +18,9 @@
 </head>
 <body>
     {% bootstrap_javascript %}
-    
     {% bootstrap_messages %}
+    {% block scripts_tags %}{% endblock scripts_tags %}
+
     {% block content %}
     
     {% endblock content %}
