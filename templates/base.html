@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static '_root.css' %}">
+    {% block head_css %}{% endblock head_css %}
     <title>Docere
     {% block title %}
     {% endblock title %}
@@ -19,7 +20,9 @@
     {% bootstrap_javascript %}
     
     {% bootstrap_messages %}
+    {% block content %}
     
+    {% endblock content %}
     
 </body>
 </html>
