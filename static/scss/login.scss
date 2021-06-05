@@ -4,12 +4,11 @@ body{
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    .container{
+    .container.login{
         margin-top: 20vh;
 
-        .card{
-            background-color: rgba(255,255,255,0.3);
-            
-        }
+    }
+    .container.register{
+        margin-top: 10vh;
     }
 }

@@ -5,5 +5,5 @@ from django.conf.urls import url
 
 
 urlpatterns = [
-    path("accounts/profile/", views.profile, name="myprofile"),
+    path("register/", views.register, name="register"),
 ]

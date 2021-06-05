@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block head_css %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock head_css %}
+{% block title %}
+Has cerrado sesión.
+{% endblock title %}
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                   <h2>Vuelve pronto!</h2>
+                   <a href="{% url 'login' %}" class="btn btn-info">Inicia sesión acá.</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+
+{% endblock content %}

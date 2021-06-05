@@ -7,11 +7,11 @@
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock head_css %}
 {% block title %}
-Iniciar sesión
+Registrarse
 {% endblock title %}
 {% block content %}
 
-<div class="container login">
+<div class="container register">
 
     <div class="row">
         <div class="col-5"></div>
@@ -34,9 +34,9 @@ Iniciar sesión
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         <small id="passwordHelpBlock" class="form-text text-muted">
-                        ¿No estás registrado?, Hazlo <a href="{% url 'register' %}">aquí.</a>
+                        ¿Ya estás registrado?, Inicia sesión <a href="{% url 'login' %}">aquí.</a>
                         </small>
-                        <input type="submit" value="Iniciar Sesión" class="btn btn-primary" />
+                        <input type="submit" value="Registrarme" class="btn btn-primary" />
                         <input type="hidden" name="next" value="{{ next }}" />
 
                     </form>
