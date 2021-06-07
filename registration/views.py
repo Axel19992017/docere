@@ -12,6 +12,7 @@ from django.views.generic import (
     DeleteView
 )
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 # Create your views here.
 @login_required
@@ -19,6 +20,7 @@ def profile(request):
     context = {}
     if not hasattr(request.user, "information"):
         context["completed"] = False
+        messages.warning(request, "Aún no ha completado su perfil, por favor, hazlo pronto :D")
     else:
         context["completed"] = True
     return render(request, "accounts/profile.html", context=context)
@@ -53,15 +55,14 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
 
 class PersonalInformationUpdate(LoginRequiredMixin, UpdateView):
     model = PersonalInformation
-    fields = '__all__'
+    fields = ['photo', 'web_page', 'ocupation', 'phone', 'facebook_link', 'twitter_link', 'instagram_link', 'linkedin_link']
     exclude = ['user']
     success_url = reverse_lazy('myprofile')
 
 
 class PersonalInformationCreate(LoginRequiredMixin, CreateView):
     model = PersonalInformation
-    fields = '__all__'
-    exclude = ['user']
+    fields = ['photo', 'web_page', 'ocupation', 'phone', 'facebook_link', 'twitter_link', 'instagram_link', 'linkedin_link']
     success_url = reverse_lazy('myprofile')
 
     def form_valid(self, form):
