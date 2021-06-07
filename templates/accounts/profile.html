@@ -2,6 +2,97 @@
 {% block title %}Mi perfil{% endblock title %}
 
 {% block content %}
-<h1>{{ user.username }}</h1>
+<div class="container">
+    <div class="main-body">
+   
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <img src="{% if completed %}{{user.information.photo.url}}{% endif %}" alt="{{user.username}}" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                      <h4>@{{user.username}}</h4>
+                      <p class="text-secondary mb-1">{% if completed %}{{ user.information.ocupation }}{% endif %}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Nombre completo</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{user.first_name }} {{user.last_name}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Correo</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ user.email }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {% if completed %}{{ user.information.phone }}{% endif %}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-primary" href="">Editar mi usuario</a>
+                      <a class="btn btn-primary" href="">Editar mi información</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="row gutters-sm">
+            <div class="container">
+                <div class="row card d-flex flex-row justify-content-center">
+                    <div class="col-2 ">
+                    <a href="{% if completed %}{{ user.information.linkedin_link }}{% endif %}" class="fs-1 text-primary">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                    </div>
+                    <div class="col-2">
+                    <a href="{% if completed %}{{ user.information.facebook_link }}{% endif %}" class="fs-1 text-primary">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    </div>
+                    <div class="col-2">
+                    <a href="{% if completed %}{{ user.information.twitter_link }}{% endif %}" class="fs-1 text-primary">
+                        <i class="bi bi-twitter"></i>
+                    </a>
+                    </div>
+                    <div class="col-2">
+                    <a href="{% if completed %}{{ user.information.instagram_link }}{% endif %}" class="fs-1 text-primary">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    </div>
+                    <div class="col-2">
+                    <a href="{% if completed %}{{ user.information.web_page }}{% endif %}" class="fs-1 text-primary">
+                        <i class="bi bi-link"></i>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
 {% endblock content %}
 

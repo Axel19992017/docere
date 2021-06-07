@@ -3,14 +3,19 @@ from django.contrib.auth import authenticate, login
 from .forms import RegisterUserForm
 # Create your views here.
 def profile(request):
-    return render(request, "accounts/profile.html")
+    context = {}
+    if not hasattr(request.user, "information"):
+        context["completed"] = False
+    else:
+        context["completed"] = True
+    return render(request, "accounts/profile.html", context=context)
 
 
 def register(request):
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             user.username = form.cleaned_data.get('username')
             user.password = form.cleaned_data.get('password')
             user.set_password(user.password)
@@ -18,10 +23,10 @@ def register(request):
             user = authenticate(username=user.username, password=form.cleaned_data.get('password'))
             
             login(request, user)
-            return redirect('/auth/profile/')
+            return redirect('myprofile')
 
 
-        return redirect('/auth/register/')
+        return redirect('register')
     else:
     
         form = RegisterUserForm()

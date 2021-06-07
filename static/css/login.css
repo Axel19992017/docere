@@ -11,5 +11,8 @@ body .container.login {
 body .container.register {
   margin-top: 10vh;
 }
+body .container.logged-out {
+  margin-top: 25vh;
+}
 
 /*# sourceMappingURL=login.css.map */

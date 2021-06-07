@@ -30,7 +30,7 @@ Registrarse
                         {% endif %}
                     {% endif %}
 
-                    <form method="post" action="{% url 'login' %}">
+                    <form method="post" action="{% url 'register' %}">
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         <small id="passwordHelpBlock" class="form-text text-muted">

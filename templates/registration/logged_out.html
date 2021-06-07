@@ -11,7 +11,7 @@ Has cerrado sesión.
 {% endblock title %}
 {% block content %}
 
-<div class="container">
+<div class="container logged-out">
 
     <div class="row">
         <div class="col-5"></div>
@@ -19,7 +19,7 @@ Has cerrado sesión.
             <div class="card">
                 <div class="card-body">
                    <h2>Vuelve pronto!</h2>
-                   <a href="{% url 'login' %}" class="btn btn-info">Inicia sesión acá.</a>
+                   <a href="{% url 'login' %}" class="btn btn-primary">Inicia sesión acá.</a>
                 </div>
             </div>
         </div>
