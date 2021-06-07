@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'macros',  
     'bootstrap5',
     'registration.apps.RegistrationConfig',
+    'virtualroom.apps.VirtualroomConfig',
 ]
 
 MIDDLEWARE = [
