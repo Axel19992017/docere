@@ -3,3 +3,5 @@ docere/__pycache__/
 .vscode/
 registration/migrations/__pycache__/
 registration/__pycache__/
+virtualroom/migrations/__pycache__/
+virtualroom/__pycache__/
