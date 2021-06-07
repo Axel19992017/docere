@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .models import VirtualRoom, VirtualRoomStatus
+from .models import VirtualRoom, VirtualRoomStatus, EnrollmentStatus
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (

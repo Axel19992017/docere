@@ -59,5 +59,5 @@ class Enrollment(TimeStamped):
     virtualroom = models.ForeignKey(VirtualRoom, verbose_name="Clase virtual", on_delete=models.CASCADE, related_name="enrollments")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Usuario", on_delete=models.CASCADE, related_name="enrollments")
     state = models.IntegerField(choices=EnrollmentStatus.choices)
-    rol = models.IntegerField(choices=EnrollmentRols.choices)
+    rol = models.IntegerField(default=EnrollmentRols.STUDENT,choices=EnrollmentRols.choices)
     
