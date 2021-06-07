@@ -1,0 +1,30 @@
+{% extends 'base_wn.html' %}
+{% load static %}
+
+
+
+{% block title %}¿Eliminar?{% endblock title %}
+
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+          <h1>¿Eliminar?</h1>
+
+          <p>Estás seguro de eliminar:  {{ object }}?</p>
+
+          <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit" action="" class="btn btn-danger" value="Si, eliminalo." />
+          </form>
+      </div>
+    </div>
+    </div>
+  </div>
+{% endblock content %}
+

@@ -12,25 +12,70 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        {% if archived %}
+        
+        <div class="col-6 col-md-8">
+            <h1>Mis clases archivadas</h1>
+        </div>
+        {% else %}
+        <div class="col-6 col-md-8">
             <h1>Mis clases</h1>
         </div>
+        <div class="col-6 col-md-4">
+            <a href="{% url 'virtualroom_create' %}" class="btn btn-primary">
+            Crear una clase virtual
+            </a>    
+        </div>
+        {% endif %}
     </div>
     <div class="row">
+    {% if not rooms %}
+        <div class="col-12">
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-lg"></i>
+            <div>
+                Por el momento no tenemos nada que mostrar aquí :D
+            </div>
+            </div>
+        </div>
+    {% endif %}
     {% for room in rooms %}
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
                 <img src="{{room.photo.url}}" class="card-img-top" alt="{{ room.name }}">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <div class="header">
+                        <h5 class="card-title">{{ room.name }}</h5>
+                        <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="virtualroomsoptions" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-gear"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="virtualroomsoptions">
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_update' room.pk %}">Editar</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_archive' room.pk %}">{% if archived %}Desarchivar{% else %}Archivar{% endif %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_delete' room.pk %}">Eliminar</a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text">{{ room.description }}</p>
+                    <a href="#" class="btn btn-primary">Ir a la clase</a>
                 </div>
                 </div>
         </div>
     {% endfor %}
-        
     </div>
+    <div class="row mt-5">
+        <div class="col">
+            {% if archived %}
+                <a href="{% url 'virtualrooms' %}" class="btn btn-primary">Volver </a>
+            {% else %}
+                <a href="{% url 'virtualroomsarchived' %}" class="btn btn-warning">Ver clases archivadas </a>
+            {% endif %}
+            
+        </div>
+    </div>
+    
 </div>
 {% endblock content %}
 
