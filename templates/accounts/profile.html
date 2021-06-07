@@ -51,8 +51,10 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-primary" href="">Editar mi usuario</a>
-                      <a class="btn btn-primary" href="">Editar mi información</a>
+                      <a class="btn btn-primary" href="{% url 'user_update' user.pk %}">Editar mi usuario</a>
+                      {% if completed %}
+                      <a class="btn btn-primary" href="{% url 'personalinformation_update' user.information.pk %}">Editar mi información</a>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
