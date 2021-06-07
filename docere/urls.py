@@ -1,3 +1,4 @@
+
 """docere URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -16,14 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import index
+from .settings import MEDIA_ROOT, MEDIA_URL
 from registration.views import profile
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', index, name="home"),
     path('admin/', admin.site.urls),
-    path('auth/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('auth/', include("registration.urls")),
     path('virtualroom/', include("virtualroom.urls")),
     path("accounts/profile/", profile, name="myprofile"),
 
 ]
+
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT) + static(MEDIA_URL, document_root = MEDIA_ROOT)
+
