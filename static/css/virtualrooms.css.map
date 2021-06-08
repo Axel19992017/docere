@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["../scss/virtualrooms.scss"],"names":[],"mappings":"AAEA;EACI;EACA;EACA;EACA","file":"virtualrooms.css"}
+{"version":3,"sourceRoot":"","sources":["../scss/global.scss","../scss/virtualrooms.scss"],"names":[],"mappings":"AAAQ;AACR;EACI;;;ACAJ;EACI;EACA;EACA;EACA","file":"virtualrooms.css"}

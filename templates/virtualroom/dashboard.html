@@ -1,4 +1,4 @@
-{% extends 'base_wn.html' %}
+{% extends 'base_ws.html' %}
 {% load static %}
 
 {% block head_css %}
@@ -21,11 +21,6 @@
         <div class="col-6 col-md-8">
             <h1>Mis clases</h1>
         </div>
-        <div class="col-6 col-md-4">
-            <a href="{% url 'virtualroom_create' %}" class="btn btn-primary">
-            Crear una clase virtual
-            </a>    
-        </div>
         {% endif %}
     </div>
     <div class="row">
@@ -44,7 +39,7 @@
             <div class="card">
                 <img src="{{room.photo.url}}" class="card-img-top" alt="{{ room.name }}">
                 <div class="card-body">
-                    <div class="header">
+                    <div class="encabezado">
                         <h5 class="card-title">{{ room.name }}</h5>
                         <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="virtualroomsoptions" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,19 +60,6 @@
         </div>
     {% endfor %}
     </div>
-    <div class="row mt-5">
-        <div class="col">
-            {% if archived %}
-                <a href="{% url 'virtualrooms' %}" class="btn btn-primary">Volver </a>
-            {% else %}
-                <a href="{% url 'virtualroomsarchived' %}" class="btn btn-warning">Ver clases archivadas </a>
-            {% endif %}
-            
-        </div>
-    </div>
-    {% if not archived %}
-        
-    {% endif %}
     
 </div>
 {% endblock content %}
