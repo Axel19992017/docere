@@ -87,7 +87,6 @@ class VirtualRoomCreate(LoginRequiredMixin, CreateView):
         obj.creator = self.request.user
         return super().form_valid(form)
 
-
 class VirtualRoomUpdate(LoginRequiredMixin, UpdateView):
     model = VirtualRoom
     fields= ['name', 'description', 'is_private', 'photo']
@@ -97,3 +96,12 @@ class VirtualRoomDelete(LoginRequiredMixin, DeleteView):
     model = VirtualRoom
     template_name="delete_object.html"
     success_url = reverse_lazy('virtualrooms')
+
+
+@login_required
+def virtual_room_detail(request, pk):
+    vr = VirtualRoom.objects.get(pk=pk)
+    context = {
+        "virtualroom": vr,
+    }
+    return render(request, "virtualroom/details.html", context)

@@ -76,7 +76,7 @@ a {
     z-index: var(--z-fixed)
 }
 
-.nav {
+.l-navbar .nav {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -84,8 +84,8 @@ a {
     overflow: hidden
 }
 
-.nav_logo,
-.nav_link {
+.l-navbar .nav_logo,
+.l-navbar .nav_link {
     display: grid;
     grid-template-columns: max-content max-content;
     align-items: center;
@@ -93,32 +93,32 @@ a {
     padding: .5rem 0 .5rem 1.5rem
 }
 
-.nav_logo {
+.l-navbar .nav_logo {
     margin-bottom: 2rem
 }
 
-.nav_logo-icon {
+.l-navbar .nav_logo-icon {
     font-size: 1.25rem;
     color: var(--white-color)
 }
 
-.nav_logo-name {
+.l-navbar .nav_logo-name {
     color: var(--white-color);
     font-weight: 700
 }
 
-.nav_link {
+.l-navbar .nav_link {
     position: relative;
     color: var(--first-color-light);
     margin-bottom: 1.5rem;
     transition: .3s
 }
 
-.nav_link:hover {
+.l-navbar .nav_link:hover {
     color: var(--white-color)
 }
 
-.nav_icon {
+.l-navbar .nav_icon {
     font-size: 1.25rem
 }
 
@@ -130,11 +130,11 @@ a {
     padding-left: calc(var(--nav-width) + 1rem)
 }
 
-.active {
+.l-navbar .active {
     color: var(--white-color)
 }
 
-.active::before {
+.l-navbar .active::before {
     content: '';
     position: absolute;
     left: 0;

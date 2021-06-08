@@ -1,0 +1,62 @@
+{% extends 'base_ws.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block head_css %}
+<link rel="stylesheet" href="{% static 'css/virtualrooms.css' %}">
+{% endblock head_css %}
+
+{% block title %}|Crear clase virtual{% endblock title %}
+
+{% block scripts_tags %}{% endblock scripts_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-dark text-white">
+                <img src="{{ virtualroom.photo.url }}" class="card-img" alt="virtualroom.name" height="200">
+                <div class="card-img-overlay">
+                    <h5 class="card-title">{{ virtualroom.name }}</h5>
+                    <p class="card-text">{{ virtualroom.description }}.</p>
+                    <p class="card-text">Creado el: {{ virtualroom.creation_date }}</p>
+                    <p class="card-text">Creado por: {{ virtualroom.creator }}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Inicio</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Notas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Participantes</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">Home</div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile</div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Contact</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var triggerTabList = [].slice.call(document.querySelectorAll('#myTab'))
+triggerTabList.forEach(function (triggerEl) {
+  var tabTrigger = new bootstrap.Tab(triggerEl)
+
+  triggerEl.addEventListener('click', function (event) {
+    event.preventDefault()
+    tabTrigger.show()
+  })
+})
+</script>
+{% endblock content %}
+
