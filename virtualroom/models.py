@@ -43,7 +43,7 @@ def delete_file_on_change_extension(sender, instance, **kwargs):
 
 
 class EnrollmentStatus(models.IntegerChoices):
-    DISMISSED = 0, 'No aceptado'
+    DISMISSED = 0, 'No aceptado / Cancelado'
     USER_PENDING = 1, 'Pendiente que acepte el estudiante'
     TEACHER_PENDING = 2, 'Pendiente que acepte el profesor'
     ACCEPTED = 3, 'Aceptado'

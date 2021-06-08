@@ -106,7 +106,9 @@ def virtual_room_detail(request, pk):
         "virtualroom": vr,
     }
     enrollment = Enrollment.objects.filter(user=request.user, virtualroom= vr).first()
-    if not enrollment:
+    if request.user == vr.creator:
+        context["enrollmentStatus"] = "Gestionar"
+    elif not enrollment:
         context["enrollmentStatus"] = "No matriculado"
     elif enrollment.state == EnrollmentStatus.ACCEPTED:
         context["enrollmentStatus"] = "Ya eres miembro"
@@ -124,3 +126,27 @@ def virtual_room_detail(request, pk):
         context["enrollmentStatus"] = "Algo extraño pasó, revisa por favor."
         
     return render(request, "virtualroom/details.html", context)
+
+@login_required 
+def set_status_enrolled(request, pk, option):
+    content = ""
+    if option == "enroll":
+        enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=request.user, state = EnrollmentStatus.TEACHER_PENDING)
+        enroll.save()
+        content = "solicitada"
+    
+    else:
+        enroll = Enrollment.objects.get(virtualroom = VirtualRoom.objects.get(pk=pk), user=request.user)
+        if option == "cancel":
+            enroll.state= EnrollmentStatus.DISMISSED    
+            content = "cancelada"
+        elif option == "retired":
+            enroll.state= EnrollmentStatus.RETIRED
+            content = "retirada"
+
+        elif option == "enrollagain":
+            enroll.state= EnrollmentStatus.TEACHER_PENDING
+            content = "solicitada otra vez"
+        enroll.save()
+    messages.success(request, f"Su inscripción a la clase ha sido {content} satisfactioramente." )
+    return redirect("virtualroomdetail", pk=pk)

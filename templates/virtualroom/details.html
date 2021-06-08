@@ -26,19 +26,32 @@
                         <button class="btn bg-primario text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             {{enrollmentStatus}}
                         </button>
-                        {% if enrollmentStatus == "No matriculado" or enrollmentStatus == "Solicitud rechazada" or enrollmentStatus == "Expulsado del grupo" or enrollmentStatus == "Abandonastes del grupo" %}
+                        {% if virtualroom.creator == user %}
+                        <ul class="dropdown-menu" aria-labelledby="virtualroomsoptions">
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_update' virtualroom.pk %}">Editar</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_archive' virtualroom.pk %}">{% if archived %}Desarchivar{% else %}Archivar{% endif %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_delete' virtualroom.pk %}">Eliminar</a></li>
+                        </ul>
+                        {% elif enrollmentStatus == "No matriculado" %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Enviar solicitud</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enroll' %}">Enviar solicitud</a></li>
                             </ul>
                         {% elif enrollmentStatus == "Ya eres miembro"  %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Abandonar el grupo</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'retired' %}">Abandonar el grupo</a></li>
+                            </ul>
+                        {% elif  enrollmentStatus == "Solicitud rechazada" or enrollmentStatus == "Abandonastes del grupo"  %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enrollagain' %}">Enivar la solicitud otra vez</a></li>
+                            </ul>
+                        {% elif  enrollmentStatus == "Expulsado del grupo" %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>XD (espera a que te inviten)</li>
                             </ul>
                         {% elif enrollmentStatus == "Solicitud pendiente de que la acepten"  %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Cancelar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'cancel' %}">Cancelar</a></li>
                             </ul>
-                        
                         {% endif %}
                         </div>                  
                         
