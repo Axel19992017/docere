@@ -54,4 +54,8 @@
   background-color: rgba(10, 22, 38, 0.6);
 }
 
+.card.notification {
+  background-color: var(--emphasis);
+}
+
 /*# sourceMappingURL=virtualrooms.css.map */

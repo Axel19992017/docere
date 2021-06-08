@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import index, index_archived, index_enrolled, virtual_room_search, virtual_room_detail, set_status_enrolled
+from .views import index, index_archived, index_enrolled, virtual_room_search, virtual_room_detail, set_status_enrolled, virtual_room_notifications
 from virtualroom import views
 from django.conf.urls import url
 
@@ -8,8 +8,9 @@ urlpatterns = [
     path('archived', index_archived, name="virtualroomsarchived"),
     path('enrolled', index_enrolled, name="virtualroomsenrolled" ),
     path('search', virtual_room_search, name="virtualroomsearch"),
+    path('notifications', virtual_room_notifications, name="virtualroomsnotifications"),
     path('<int:pk>/details', virtual_room_detail, name="virtualroomdetail"),
-    path('<int:pk>/<str:option>', set_status_enrolled, name="setstatusenrolled"),
+    path('<int:pk>/<str:option>/<int:pk_user>', set_status_enrolled, name="setstatusenrolled"),
 ]
 
 urlpatterns += [

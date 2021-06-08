@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/virtualrooms.css' %}">
 {% endblock head_css %}
 
-{% block title %}|Crear clase virtual{% endblock title %}
+{% block title %}|{{ virtualroom.name }}{% endblock title %}
 
 {% block scripts_tags %}{% endblock scripts_tags %}
 
@@ -34,15 +34,15 @@
                         </ul>
                         {% elif enrollmentStatus == "No matriculado" %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enroll' %}">Enviar solicitud</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enroll' user.pk %}">Enviar solicitud</a></li>
                             </ul>
                         {% elif enrollmentStatus == "Ya eres miembro"  %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'retired' %}">Abandonar el grupo</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'retired' user.pk %}">Abandonar el grupo</a></li>
                             </ul>
                         {% elif  enrollmentStatus == "Solicitud rechazada" or enrollmentStatus == "Abandonastes del grupo"  %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enrollagain' %}">Enivar la solicitud otra vez</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enrollagain' user.pk %}">Enivar la solicitud otra vez</a></li>
                             </ul>
                         {% elif  enrollmentStatus == "Expulsado del grupo" %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -50,7 +50,7 @@
                             </ul>
                         {% elif enrollmentStatus == "Solicitud pendiente de que la acepten"  %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'cancel' %}">Cancelar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'cancel' user.pk %}">Cancelar</a></li>
                             </ul>
                         {% endif %}
                         </div>                  

@@ -12,6 +12,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.contrib import messages
 from virtualroom.models import Enrollment
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required
@@ -79,6 +80,18 @@ def virtual_room_search(request):
         return render(request, "virtualroom/dashboard.html", context)
     else:
         return redirect('virtualrooms')
+
+@login_required
+def virtual_room_notifications(request):
+    pending_me = Enrollment.objects.filter(Q(virtualroom__creator = request.user) & Q(state = EnrollmentStatus.TEACHER_PENDING)).all()
+    pending = Enrollment.objects.filter(Q(user = request.user) & Q(state = EnrollmentStatus.TEACHER_PENDING)).all()
+    context = {
+        "pendings_me" : pending_me,
+        "pendings" : pending,
+    }
+
+    return render(request, "virtualroom/notifications.html", context)
+
 class VirtualRoomCreate(LoginRequiredMixin, CreateView):
     model = VirtualRoom
     fields= ['name', 'description', 'is_private', 'photo']
@@ -128,15 +141,15 @@ def virtual_room_detail(request, pk):
     return render(request, "virtualroom/details.html", context)
 
 @login_required 
-def set_status_enrolled(request, pk, option):
+def set_status_enrolled(request, pk, option, pk_user):
     content = ""
     if option == "enroll":
-        enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=request.user, state = EnrollmentStatus.TEACHER_PENDING)
+        enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user), state = EnrollmentStatus.TEACHER_PENDING)
         enroll.save()
         content = "solicitada"
     
     else:
-        enroll = Enrollment.objects.get(virtualroom = VirtualRoom.objects.get(pk=pk), user=request.user)
+        enroll = Enrollment.objects.get(virtualroom = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user))
         if option == "cancel":
             enroll.state= EnrollmentStatus.DISMISSED    
             content = "cancelada"
@@ -147,6 +160,10 @@ def set_status_enrolled(request, pk, option):
         elif option == "enrollagain":
             enroll.state= EnrollmentStatus.TEACHER_PENDING
             content = "solicitada otra vez"
+
+        elif option == "accept":
+            enroll.state= EnrollmentStatus.ACCEPTED
+            content = "aprobada"
         enroll.save()
-    messages.success(request, f"Su inscripción a la clase ha sido {content} satisfactioramente." )
+    messages.success(request, f"La inscripción a la clase ha sido {content} satisfactioramente." )
     return redirect("virtualroomdetail", pk=pk)
