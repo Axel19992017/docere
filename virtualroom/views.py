@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import VirtualRoom, VirtualRoomStatus, EnrollmentStatus
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     DetailView,
@@ -63,7 +64,20 @@ def virtual_room_archive(request, pk):
         messages.info(request, 'La clase está desarchivada.')
     return redirect('virtualrooms')
 
-
+@login_required
+def virtual_room_search(request):
+    if request.method == "POST":
+        search = request.POST.get("search")
+    
+        classes = VirtualRoom.objects.filter((Q(name__icontains=search) | Q(description__icontains=search)) & Q(is_private=False)).all()
+        context = {
+            "rooms": classes,
+            "options": False,
+            "title": "Resultados ",
+        }
+        return render(request, "virtualroom/dashboard.html", context)
+    else:
+        return redirect('virtualrooms')
 class VirtualRoomCreate(LoginRequiredMixin, CreateView):
     model = VirtualRoom
     fields= ['name', 'description', 'is_private', 'photo']
