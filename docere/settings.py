@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'bootstrap5',
     'registration.apps.RegistrationConfig',
     'virtualroom.apps.VirtualroomConfig',
+    'information.apps.InformationConfig',
+    'evaluation.apps.EvaluationConfig',
 ]
 
 MIDDLEWARE = [
