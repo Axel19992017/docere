@@ -70,13 +70,50 @@
                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Notas</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Participantes</button>
+                <button class="nav-link" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants" type="button" role="tab" aria-controls="participants" aria-selected="false">Participantes</button>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">Home</div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile</div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Contact</div>
+                <div class="tab-pane fade" id="participants" role="tabpanel" aria-labelledby="participants-tab">
+                <div class="container m-2">
+                    <div class="row">
+                    {% if not participants %}
+                       <div class="col-12">
+                            <div class="alert alert-danger" role="alert">
+                                Aún no hay personas inscritas :D
+                            </div>
+                       </div>
+                    {% endif %}
+                        {% for participant in participants %}
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                   <div class="card-body d-flex flex-row align-items-center justify-content-between">
+                                        <h5 class="card-title">{{ participant.user.first_name }} {{ participant.user.last_name }}</h5>
+                                        <div class="avata d-flex flex-column align-items-center justify-content-betweenr">
+                                            <img src="{% if participant.user.information %}{{participant.user.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{user.username}}" class="rounded-circle" width="40" height="40" > 
+                                            <h6 class="card-subtitle">@{{ participant.user.username }} </h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="card-subtitle">{{participant.get_rol_display}}</h6>
+                                        {% if participant.virtualroom.creator == user %}
+                                        <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'retired' participant.user.pk %}" class="btn btn-danger">Expulsar</a>
+                                            {% if participant.get_rol_display == "Estudiante" %}
+                                                <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'to-teacher' participant.user.pk %}" class="btn btn-danger">Ascender a profesor</a>
+                                            {% else %}
+                                                <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'to-student' participant.user.pk %}" class="btn btn-danger">Cambiar a estudiante</a>
+                                            {% endif %}
+
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>

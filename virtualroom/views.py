@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .models import VirtualRoom, VirtualRoomStatus, EnrollmentStatus
+from .models import VirtualRoom, VirtualRoomStatus, EnrollmentStatus, EnrollmentRols
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -115,9 +115,12 @@ class VirtualRoomDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def virtual_room_detail(request, pk):
     vr = VirtualRoom.objects.get(pk=pk)
+    participants = vr.enrollments.filter(state=EnrollmentStatus.ACCEPTED).all()
     context = {
         "virtualroom": vr,
+        "participants": participants
     }
+    
     enrollment = Enrollment.objects.filter(user=request.user, virtualroom= vr).first()
     if request.user == vr.creator:
         context["enrollmentStatus"] = "Gestionar"
@@ -164,6 +167,15 @@ def set_status_enrolled(request, pk, option, pk_user):
         elif option == "accept":
             enroll.state= EnrollmentStatus.ACCEPTED
             content = "aprobada"
+        if option == "to-student" or option == "to-teacher":
+            
+            if option == "to-student":
+                enroll.rol = EnrollmentRols.STUDENT
+            elif option == "to-teacher":
+                enroll.rol = EnrollmentRols.TEACHER
+            enroll.save()
+            messages.success(request, f"Ahora @{enroll.user.username} es {enroll.get_rol_display()}." )
+            return redirect("virtualroomdetail", pk=pk)
         enroll.save()
     messages.success(request, f"La inscripción a la clase ha sido {content} satisfactioramente." )
     return redirect("virtualroomdetail", pk=pk)
