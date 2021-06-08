@@ -18,7 +18,8 @@ def index(request):
     classes = VirtualRoom.objects.filter(creator=request.user, status=VirtualRoomStatus.ACTIVE)
     context = {
         "rooms": classes,
-        "archived": False,
+        "options": True,
+        "title": "Mis clases",
     }
     return render(request, "virtualroom/dashboard.html", context)
 
@@ -28,7 +29,24 @@ def index_archived(request):
     classes = VirtualRoom.objects.filter(creator=request.user, status=VirtualRoomStatus.DEACTIVATE)
     context = {
         "rooms": classes,
-        "archived": True,
+        "options": True,
+        "title": "Mis clases archivadas",
+    }
+    return render(request, "virtualroom/dashboard.html", context)
+
+@login_required
+def index_enrolled(request):
+
+    enrolleds = request.user.enrollments.filter(state=EnrollmentStatus.ACCEPTED)
+    classes = []
+    for enroll in enrolleds:
+        classes.append(enroll.virtualroom)
+
+
+    context = {
+        "rooms": classes,
+        "options": False,
+        "title": "Clases en las que me matriculé ",
     }
     return render(request, "virtualroom/dashboard.html", context)
 

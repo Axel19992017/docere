@@ -1,11 +1,12 @@
 from django.urls import path, include
-from .views import index, index_archived
+from .views import index, index_archived, index_enrolled
 from virtualroom import views
 from django.conf.urls import url
 
 urlpatterns = [
     path('', index, name="virtualrooms"),
     path('archived', index_archived, name="virtualroomsarchived"),
+    path('enrolled', index_enrolled, name="virtualroomsenrolled" )
 ]
 
 urlpatterns += [
