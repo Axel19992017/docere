@@ -68,8 +68,8 @@ def virtual_room_archive(request, pk):
 def virtual_room_search(request):
     if request.method == "POST":
         search = request.POST.get("search")
-    
-        classes = VirtualRoom.objects.filter((Q(name__icontains=search) | Q(description__icontains=search)) & Q(is_private=False)).all()
+        # busca por username, first name, lastname, nombre y descripción de la asignatura
+        classes = VirtualRoom.objects.filter((Q(name__icontains=search) | Q(description__icontains=search) | Q(creator__first_name__icontains=search) | Q(creator__last_name__icontains=search) | Q(creator__username__icontains=search)) & Q(is_private=False)).all()
         context = {
             "rooms": classes,
             "options": False,
