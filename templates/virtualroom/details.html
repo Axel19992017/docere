@@ -10,7 +10,40 @@
 
 {% block scripts_tags %}{% endblock scripts_tags %}
 
+{% block element_nav %}
+
+<!-- Button trigger modal -->
+<a class="nav_link" data-bs-toggle="modal" data-bs-target="#addSection">
+  <i class='bx bx-message-square-add bx-sm'></i> <span class="nav_name">Crear sección</span>
+</a>
+
+{% endblock element_nav %}
+
 {% block content %}
+<div class="modal fade" id="addSection" tabindex="-1" aria-labelledby="addSectionLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSectionLabel">Crear sección</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <form action="{% url 'createseccion' %}" method="post">
+      <div class="modal-body">
+            <div class="mb-3">
+            {% csrf_token %}
+                <input type="hidden" name="pk_vr" value="{{virtualroom.pk}}">
+                <label for="name" class="form-label">Nombre de la sección</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear sección</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col">
@@ -74,7 +107,26 @@
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">Home</div>
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="container m-1">
+                <div class="row">
+                    <div class="col-12">
+                        {% if not virtualroom.sections.all %}
+                        <div class="alert alert-danger" role="alert">
+                        Esta clase no tiene seccioens
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% for section in virtualroom.sections.all %}
+                    <div class="col-12">
+                        <h3>{{section.name}}</h3>
+                        <hr>
+                    </div>
+                    {% endfor %}
+                </div>
+                </div>
+
+                </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile</div>
                 <div class="tab-pane fade" id="participants" role="tabpanel" aria-labelledby="participants-tab">
                 <div class="container m-2">

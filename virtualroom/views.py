@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from .models import VirtualRoom, VirtualRoomStatus, EnrollmentStatus, EnrollmentRols
+from information.forms import DocumentModelForm, TopicModelForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -140,7 +141,10 @@ def virtual_room_detail(request, pk):
         context["enrollmentStatus"] = "Abandonastes del grupo"
     else:
         context["enrollmentStatus"] = "Algo extraño pasó, revisa por favor."
-        
+    
+    context["formAddTopic"] = TopicModelForm
+    context["formAddTopicFields"] = DocumentModelForm
+
     return render(request, "virtualroom/details.html", context)
 
 @login_required 

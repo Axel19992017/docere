@@ -4,8 +4,6 @@ from django.conf import settings
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 
-
-
 class VirtualRoomStatus(models.IntegerChoices):
     ACTIVE = 0, 'Clase Virtual Activada'
     DEACTIVATE = 1, 'Clase Virtual Archivada'
