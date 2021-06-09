@@ -18,8 +18,10 @@ def create_to_topic(request, pk_s):
             topic_instance.save()
 
             for f in files:
-                file_instance = DocumentModelForm(file = f, topic = topic_instance)
+                file_instance = Document(file = f, topic = topic_instance)
                 file_instance.save()
+        else:
+            messages.error(request, "Sucedió algo, pongase a llorar por favor")
         return redirect("virtualroomdetail", pk = section.virtualroom.pk)
     else:
         return redirect("virtualrooms")
