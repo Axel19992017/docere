@@ -79,6 +79,7 @@ TEMPLATES = [
             'libraries':{
                 # https://stackoverflow.com/questions/40686201/django-1-10-1-my-templatetag-is-not-a-registered-tag-library-must-be-one-of
                 'filename' : 'docere.templatetags.filename',
+                'evaluations_by_student' : 'docere.templatetags.evaluations_by_student',
             }
         },
     },
