@@ -59,3 +59,5 @@ class Enrollment(TimeStamped):
     state = models.IntegerField(choices=EnrollmentStatus.choices)
     rol = models.IntegerField(default=EnrollmentRols.STUDENT,choices=EnrollmentRols.choices)
     
+    def __str__(self):
+        return f"{self.user}"
