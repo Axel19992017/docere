@@ -25,6 +25,39 @@ def create_to_topic(request, pk_s):
         return redirect("virtualroomdetail", pk = section.virtualroom.pk)
     else:
         return redirect("virtualrooms")
+
+def edit_topic(request, pk_t):
+    topic = Topic.objects.get(pk=pk_t)
+    if request.method == "POST":
+        form = TopicModelForm(request.POST)
+        
+        files = request.FILES.getlist('file')
+        if form.is_valid():
+            topic_instance = form.save(commit=False)
+            topic.name = topic_instance.name
+            topic.description = topic_instance.description
+            topic.save()
+
+        else:
+            messages.error(request, "Sucedió algo, pongase a llorar por favor")
+        return redirect("virtualroomdetail", pk = topic.section.virtualroom.pk)
+    else:
+        # https://stackoverflow.com/questions/11667845/object-has-no-attribute-get
+        form = TopicModelForm(instance = topic)
+        context ={
+            "TopicForm": form,
+            "topic": topic,
+        }
+        return render(request, "virtualroom/topic_form.html", context)
+
+
+def delete_topic(request, pk_t):
+    topic = Topic.objects.get(pk=pk_t)
+    
+    topic.delete()
+    messages.info(request, "Se ha eliminado el tema.")
+    return redirect("virtualroomdetail", pk = topic.section.virtualroom.pk)
+
             
 def create_section(request):
     if request.method == "POST":

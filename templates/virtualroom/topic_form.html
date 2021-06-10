@@ -1,0 +1,37 @@
+{% extends 'base_ws.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block head_css %}
+<link rel="stylesheet" href="{% static 'css/virtualrooms.css' %}">
+{% endblock head_css %}
+
+{% block title %}|Crear clase virtual{% endblock title %}
+
+{% block scripts_tags %}{% endblock scripts_tags %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="row">
+        <div class="col-12">
+            <h3>Editar el tema {{ topic.name }}, de la sección {{topic.section.name}} ({{ topic.section.virtualroom.name }})</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-12 col-md-6">
+            <form action="{% url 'edittopic' topic.pk %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% bootstrap_form TopicForm %}
+                
+                <input type="submit" value="Guardar cambios" class="btn btn-primary" />
+
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+{% endblock content %}
+

@@ -166,8 +166,8 @@
                                                     <h4 class="card-title">
                                                         {{topic.name}}
                                                         {% if section.virtualroom.creator == user %}
-                                                         <a class="text-success" href="" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                                         <a href="" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar"><i class="bi bi-trash"></i></a>
+                                                         <a class="text-success" href="{% url 'edittopic' topic.pk %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar"><i class="bi bi-pencil-square"></i></a>
+                                                         <a href="{% url 'deletetopic' topic.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar"><i class="bi bi-trash"></i></a>
                                                         {% endif %}
                                                     </h4>
                                                     <p class="card-text">
