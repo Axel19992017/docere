@@ -144,6 +144,7 @@ def virtual_room_detail(request, pk):
     
     context["formAddTopic"] = TopicModelForm
     context["formAddTopicFields"] = DocumentModelForm
+    context["enrollment"] = enrollment
 
     return render(request, "virtualroom/details.html", context)
 

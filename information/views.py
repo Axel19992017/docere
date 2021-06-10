@@ -58,6 +58,13 @@ def delete_topic(request, pk_t):
     messages.info(request, "Se ha eliminado el tema.")
     return redirect("virtualroomdetail", pk = topic.section.virtualroom.pk)
 
+def delete_sections(request, pk_s):
+    section = Section.objects.get(pk=pk_s)
+    
+    section.delete()
+    messages.info(request, "Se ha eliminado el tema.")
+    return redirect("virtualroomdetail", pk = section.virtualroom.pk)
+
             
 def create_section(request):
     if request.method == "POST":
@@ -66,5 +73,17 @@ def create_section(request):
         section = Section(name = name, virtualroom = vr).save()
         messages.success(request, "Sección creada satisfactoriamente")
         return redirect("virtualroomdetail", pk = vr.pk)
+    else:
+        return redirect("virtualrooms")
+
+def edit_sections(request, pk_s):
+    if request.method == "POST":
+        
+        name = request.POST.get("name")
+        section = Section.objects.get(pk=pk_s)
+        section.name = name
+        section.save()
+        messages.success(request, "Sección creada satisfactoriamente")
+        return redirect("virtualroomdetail", pk = section.virtualroom.pk)
     else:
         return redirect("virtualrooms")

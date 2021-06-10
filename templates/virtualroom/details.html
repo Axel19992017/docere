@@ -14,13 +14,17 @@
 {% block element_nav %}
 
 <!-- Button trigger modal -->
+{% if virtualroom.creator == user or enrollment.rol == 1 %}
+
 <a class="nav_link" data-bs-toggle="modal" data-bs-target="#addSection">
   <i class='bx bx-message-square-add bx-sm'></i> <span class="nav_name">Crear sección</span>
 </a>
+{% endif %}
 
 {% endblock element_nav %}
 
 {% block content %}
+{% if virtualroom.creator == user or enrollment.rol == 1 %}
 <div class="modal fade" id="addSection" tabindex="-1" aria-labelledby="addSectionLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -45,6 +49,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 <div class="container">
     <div class="row">
         <div class="col">
@@ -94,6 +99,9 @@
             </div>
         </div>
     </div>
+    {% if enrollment or virtualroom.creator == user %}
+    
+   
     <div class="row">
         <div class="col">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -122,15 +130,43 @@
                         <div class="col-12 m-md-2">
                             <div class="d-flex flex-row align-items-center justify-content-between">
                                 <h3>{{section.name}}</h3>
-                            <!-- Button trigger modal -->
-                                {% if section.virtualroom.creator == user %}
+                            <!-- Button trigger modal, si es 1 es porque es profgesor -->
+                                {% if section.virtualroom.creator == user or enrollment.rol == 1 %}
+                                    <div class="d-flex flex-row">
                                     <h3 class="" data-bs-toggle="modal" data-bs-target="#addTopicS{{ section.pk }}" id="tema">
                                     <i class="bi bi-plus-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar nuevo tema"></i>
                                     </h3>
-                                   
+                                    <h3 data-bs-toggle="modal" data-bs-target="#editSection{{section.pk}}" ><span class="text-success" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar la sección"><i class="bi bi-pencil-square"></i></span></h3>
+                                    <h3><a href="{% url 'deletesection' section.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar la sección y sus temas"><i class="bi bi-trash"></i></a></h3>
+                                    </div>
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="editSection{{section.pk}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editSection{{section.pk}}Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editSection{{section.pk}}Label">Editar el nombre de la sección</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{% url 'editsection' section.pk %}" method="post">
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+                                            <label for="name" class="form-label">Nuevo nombre: </label>
+                                            <input type="text" id="name" class="form-control" name="name" value="{{section.name}}">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Cambiar</button>
+                                        </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                    </div>
                                 {% endif %}
                             </div>
-                                {% if section.virtualroom.creator == user %}
+                                {% if section.virtualroom.creator == user or enrollment.rol == 1 %}
                                 <!-- Modal -->
                                 <div class="modal fade" id="addTopicS{{ section.pk }}" tabindex="-1" aria-labelledby="addTopicS{{ section.pk }}Label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -165,7 +201,7 @@
                                                 <div class="card-body">
                                                     <h4 class="card-title">
                                                         {{topic.name}}
-                                                        {% if section.virtualroom.creator == user %}
+                                                        {% if section.virtualroom.creator == user or enrollment.rol == 1 %}
                                                          <a class="text-success" href="{% url 'edittopic' topic.pk %}" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar"><i class="bi bi-pencil-square"></i></a>
                                                          <a href="{% url 'deletetopic' topic.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar"><i class="bi bi-trash"></i></a>
                                                         {% endif %}
@@ -232,7 +268,7 @@
                                                 <i class="bi bi-arrow-up-circle-fill" ></i></a>
                                                
                                             {% else %}
-                                                <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'to-student' participant.user.pk %}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar a estudiante" id="descender">
+                                                <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'to-student' participant.user.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar a estudiante" id="descender">
                                                 <i class="bi bi-arrow-down-circle-fill"></i></a>
                                                 
                                             {% endif %}
@@ -251,6 +287,8 @@
             </div>
         </div>
     </div>
+
+     {% endif %}
 </div>
 <script>
 var triggerTabList = [].slice.call(document.querySelectorAll('#myTab'))
