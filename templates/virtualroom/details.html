@@ -1,6 +1,7 @@
 {% extends 'base_ws.html' %}
 {% load bootstrap5 %}
 {% load static %}
+{% load filename %}
 
 {% block head_css %}
 <link rel="stylesheet" href="{% static 'css/virtualrooms.css' %}">
@@ -155,13 +156,17 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h2 class="card-title">
+                                                <h4 class="card-title">
                                                     {{topic.name}}
-                                                </h2>
+                                                </h4>
                                                 <p class="card-text">
                                                     {{topic.description}}
-                                                    
                                                 </p>
+                                            </div>
+                                            <div class="card-body d-flex flex-row">
+                                                {% for document in topic.documents.all %}
+                                                    <a href="{{document.file.url}}" download>{{document.file | filename}}</a>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>

@@ -13,6 +13,6 @@ class Topic(TimeStamped):
     section = models.ForeignKey(Section, verbose_name="Sección", related_name="topics", on_delete=models.CASCADE)
 class Document(TimeStamped):
     file = models.FileField(upload_to="topics/%Y/%m/%d")
-    topic = models.ForeignKey(Topic, verbose_name="archivos", on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, verbose_name="archivos", on_delete=models.CASCADE, related_name="documents")
 
     
