@@ -124,13 +124,10 @@
                                 <h3>{{section.name}}</h3>
                             <!-- Button trigger modal -->
                                 {% if section.virtualroom.creator == user %}
-                                    <h3 class="" data-bs-toggle="modal" data-bs-target="#addTopicS{{ section.pk }}" id="tema" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar nuevo tema">
-                                    <i class="bi bi-plus-circle"></i>
+                                    <h3 class="" data-bs-toggle="modal" data-bs-target="#addTopicS{{ section.pk }}" id="tema">
+                                    <i class="bi bi-plus-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar nuevo tema"></i>
                                     </h3>
-                                    <script>
-                                    var exampleEl0 = document.getElementById('tema')
-                                    var tooltip0 = new bootstrap.Tooltip(exampleEl, [])
-                                    </script>
+                                   
                                 {% endif %}
                             </div>
                                 {% if section.virtualroom.creator == user %}
@@ -168,6 +165,10 @@
                                                 <div class="card-body">
                                                     <h4 class="card-title">
                                                         {{topic.name}}
+                                                        {% if section.virtualroom.creator == user %}
+                                                         <a class="text-success" href="" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar"><i class="bi bi-pencil-square"></i></a>
+                                                         <a href="" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar"><i class="bi bi-trash"></i></a>
+                                                        {% endif %}
                                                     </h4>
                                                     <p class="card-text">
                                                         {{topic.description}}
@@ -224,25 +225,16 @@
                                     
                                             <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'retired' participant.user.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Expulsar" id="expulsar">
                                             <i class="bi bi-slash-circle-fill"></i></a>
-                                            <script>
-                                                var exampleEl1 = document.getElementById('expulsar')
-                                                var tooltip1 = new bootstrap.Tooltip(exampleEl1, [])
-                                            </script>
+                                            
                                         
                                             {% if participant.get_rol_display == "Estudiante" %}
                                                 <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'to-teacher' participant.user.pk %}" class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Ascender a profesor" id="ascender">
                                                 <i class="bi bi-arrow-up-circle-fill" ></i></a>
-                                                <script>
-                                                    var exampleEl2 = document.getElementById('ascender')
-                                                    var tooltip2 = new bootstrap.Tooltip(exampleEl2, [])
-                                                </script>
+                                               
                                             {% else %}
                                                 <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'to-student' participant.user.pk %}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar a estudiante" id="descender">
                                                 <i class="bi bi-arrow-down-circle-fill"></i></a>
-                                                <script>
-                                                    var exampleEl3 = document.getElementById('descender')
-                                                    var tooltip3 = new bootstrap.Tooltip(exampleEl3, [])
-                                                </script>
+                                                
                                             {% endif %}
 
 
@@ -269,6 +261,10 @@ triggerTabList.forEach(function (triggerEl) {
     event.preventDefault()
     tabTrigger.show()
   })
+})
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 </script>
 {% endblock content %}
