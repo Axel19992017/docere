@@ -101,7 +101,7 @@
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Inicio</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Notas</button>
+                <button class="nav-link" id="asignaciones-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="asignaciones" aria-selected="false">Asignaciones</button>
                 </li>
                 <li class="nav-item" role="presentation">
                 <button class="nav-link" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants" type="button" role="tab" aria-controls="participants" aria-selected="false">Participantes</button>
@@ -110,84 +110,93 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="container p-0 p-md-2">
-                <div class="row">
-                    <div class="col-12">
-                        {% if not virtualroom.sections.all %}
-                        <div class="alert alert-danger" role="alert">
-                        Esta clase no tiene secciones
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% for section in virtualroom.sections.all %}
-                    <div class="col-12 m-md-2">
-                        <div class="d-flex flex-row align-items-center justify-content-between">
-                            <h3>{{section.name}}</h3>
-                        <!-- Button trigger modal -->
-                            <h3 class="" data-bs-toggle="modal" data-bs-target="#addTopicS{{ section.pk }}">
-                            <i class="bi bi-plus-circle"></i>
-                            </h3>
-                        </div>
-                            <!-- Modal -->
-                            <div class="modal fade" id="addTopicS{{ section.pk }}" tabindex="-1" aria-labelledby="addTopicS{{ section.pk }}Label" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addTopicS{{ section.pk }}Label">Agregar tema</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{% url 'createtopic' section.pk %}" method="post" enctype='multipart/form-data'>
-                                    <div class="modal-body">
-                                        {% csrf_token %}
-                                        {% bootstrap_form formAddTopic %}
-                                        {% bootstrap_form formAddTopicFields %}
-                                        
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </form>
-                                </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {% if not virtualroom.sections.all %}
+                            <div class="alert alert-danger" role="alert">
+                            Esta clase no tiene secciones
                             </div>
+                            {% endif %}
+                        </div>
+                        {% for section in virtualroom.sections.all %}
+                        <div class="col-12 m-md-2">
+                            <div class="d-flex flex-row align-items-center justify-content-between">
+                                <h3>{{section.name}}</h3>
+                            <!-- Button trigger modal -->
+                                {% if section.virtualroom.creator == user %}
+                                    <h3 class="" data-bs-toggle="modal" data-bs-target="#addTopicS{{ section.pk }}" id="tema" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar nuevo tema">
+                                    <i class="bi bi-plus-circle"></i>
+                                    </h3>
+                                    <script>
+                                    var exampleEl0 = document.getElementById('tema')
+                                    var tooltip0 = new bootstrap.Tooltip(exampleEl, [])
+                                    </script>
+                                {% endif %}
                             </div>
-                        <hr>
-                        <div class="container">
-                            <div class="row">
-                                {% for topic in section.topics.all %}
-                                    <div class="col-12 my-2">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">
-                                                    {{topic.name}}
-                                                </h4>
-                                                <p class="card-text">
-                                                    {{topic.description}}
-                                                </p>
-                                            </div>
-                                            <div class="card-body container">
-                                            <div class="row">
-                                                {% for document in topic.documents.all %}
-                                                    <a href="{{document.file.url}}" download class="col m-1"> <i class="bi bi-arrow-down-square-fill"></i> {{document.file | filename}}</a>
-                                                {% endfor %}
+                                {% if section.virtualroom.creator == user %}
+                                <!-- Modal -->
+                                <div class="modal fade" id="addTopicS{{ section.pk }}" tabindex="-1" aria-labelledby="addTopicS{{ section.pk }}Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addTopicS{{ section.pk }}Label">Agregar tema</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{% url 'createtopic' section.pk %}" method="post" enctype='multipart/form-data'>
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+                                            {% bootstrap_form formAddTopic %}
+                                            {% bootstrap_form formAddTopicFields %}
                                             
-                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                                {% endif %}
+
+                            <hr>
+                            <div class="container">
+                                <div class="row">
+                                    {% for topic in section.topics.all %}
+                                        <div class="col-12 my-2">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">
+                                                        {{topic.name}}
+                                                    </h4>
+                                                    <p class="card-text">
+                                                        {{topic.description}}
+                                                    </p>
+                                                </div>
+                                                <div class="card-body container">
+                                                <div class="row">
+                                                    {% for document in topic.documents.all %}
+                                                        <a href="{{document.file.url}}" download class="col m-1"> <i class="bi bi-arrow-down-square-fill"></i> {{document.file | filename}}</a>
+                                                    {% endfor %}
+                                                
+                                                </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
+
+                        {% endfor %}
                     </div>
-
-                    {% endfor %}
-                </div>
                 </div>
 
                 </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile</div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="asignaciones-tab">Asignaciones</div>
                 <div class="tab-pane fade" id="participants" role="tabpanel" aria-labelledby="participants-tab">
-                <div class="container m-2">
+                <div class="container p-0 p-md-2">
                     <div class="row">
                     {% if not participants %}
                        <div class="col-12">
