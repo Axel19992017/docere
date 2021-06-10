@@ -1,6 +1,6 @@
 from django.db import models
 from docere.models import TimeStamped
-from virtualroom.models import Enrollment
+from virtualroom.models import Enrollment, VirtualRoom
 from django.conf import settings
 # Create your models here.
 
@@ -9,6 +9,7 @@ from django.conf import settings
 class Evaluation(TimeStamped):
     name = models.CharField(max_length=50, verbose_name="Nombre")
     description = models.CharField(max_length=200, verbose_name="Descripción", blank=True)
+    virtualroom = models.ForeignKey(VirtualRoom, related_name="evaluations",verbose_name="Clase", on_delete=models.CASCADE)
     enrollments = models.ManyToManyField(Enrollment, through="Puntuation", verbose_name="Estudiantes", related_name="evaluations")
 
 

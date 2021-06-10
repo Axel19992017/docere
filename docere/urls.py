@@ -28,6 +28,7 @@ urlpatterns = [
     path('auth/', include("registration.urls")),
     path('information/', include("information.urls")),
     path('virtualroom/', include("virtualroom.urls")),
+    path('evaluation/', include("evaluation.urls")),
     path("accounts/profile/", profile, name="myprofile"),
 
 ]
