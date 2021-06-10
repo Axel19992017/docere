@@ -235,15 +235,75 @@
                 <div class="container p-0 p-md-2">
                     <div class="row">
                         <div class="col-12">
-                            <table class="table">
+                            <div class="table-responsive">
+                            <table class="table align-middle">
                             <thead>
                                 <tr>
                                 <th scope="col">Estudiante  
-                                <span data-bs-toggle="modal" data-bs-target="#addEvaluation">
-                                <i class="bi bi-node-minus" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar evaluación"></i></span>
+                                <span class="h4" data-bs-toggle="modal" data-bs-target="#addEvaluation">
+                                {% if virtualroom.creator == user or enrollment.rol == 1 %}
+                                <i class="bi bi-file-earmark-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar evaluación"></i>
+                                {% endif %}
+                                </span>
                                 </th>
                                 {% for evaluation in virtualroom.evaluations.all %}
-                                <th scope="col">{{evaluation.name}}</th>
+                                <th scope="col" >
+                                <span {% if evaluation.description %}data-bs-toggle="tooltip" data-bs-placement="top" title="{{evaluation.description}}"{% endif %}>{{evaluation.name}}</span>
+                                
+                                {% if virtualroom.creator == user or enrollment.rol == 1 %}
+
+                                <i class="bi bi-pencil-square text-warning" data-bs-toggle="modal" data-bs-target="#editEvaluation{{evaluation.pk}}"></i>
+                                <i class="bi bi-trash text-danger" data-bs-toggle="modal" data-bs-target="#deleteEvaluation{{evaluation.pk}}"></i>
+                                
+                                <div class="modal fade" id="editEvaluation{{evaluation.pk}}" tabindex="-1" aria-labelledby="editEvaluation{{evaluation.pk}}Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editEvaluation{{evaluation.pk}}Label">Editar</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{% url 'updateevaluation' evaluation.pk %}" method="post">
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">Nombre de la evaluación</label>
+                                                    <input type="text" class="form-control" required id="name" name="name" value="{{evaluation.name}}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Descripción</label>
+                                                    <textarea class="form-control" id="description" name="description" rows="2">{{evaluation.description}}</textarea>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Editar evaluación</button>
+                                        </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="deleteEvaluation{{evaluation.pk}}" tabindex="-1" aria-labelledby="deleteEvaluation{{evaluation.pk}}Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteEvaluation{{evaluation.pk}}Label">Eliminar Evaluación</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>¿Seguro que quieres eliminar la evaluación?</h5>
+
+                                            <h6>Como es de esperar, se eliminarán todas la información relacinoada a ella</h6>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <a href="{% url 'deleteevaluation' evaluation.pk %}" class="btn btn-danger">Si, eliminar</a>
+                                        </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                </th>
                                 {% endfor %}
                                 </tr>
                             </thead>
@@ -257,9 +317,13 @@
                                     {% if not student|evaluations_by_student:evaluation %}
                                         <td>
                                         <div class="alert alert-danger" role="alert">
-                                        Sin registros <span class="alert-link" data-bs-toggle="modal" data-bs-target="#addPuntuationE{{evaluation.pk}}-S{{student.pk}}"><i class="bi bi-plus-square-fill"></i></span>
+                                        Sin registros 
+                                        {% if virtualroom.creator == user or enrollment.rol == 1 %}
+                                            <span class="alert-link" data-bs-toggle="modal" data-bs-target="#addPuntuationE{{evaluation.pk}}-S{{student.pk}}"><i class="bi bi-plus-square-fill"></i></span>
+                                        {% endif %}
                                         </div>
                                         </td>
+                                        {% if virtualroom.creator == user or enrollment.rol == 1 %}
                                         <div class="modal fade" id="addPuntuationE{{evaluation.pk}}-S{{student.pk}}" tabindex="-1" aria-labelledby="addPuntuationE{{evaluation.pk}}-S{{student.pk}}Label" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -287,9 +351,60 @@
                                             </div>
                                         </div>
                                         </div>
+                                        {% endif %}
                                     {% else %}
                                         {% for puntuation in student|evaluations_by_student:evaluation %}
-                                        <td ><span {% if puntuation.observation %}data-bs-toggle="tooltip" data-bs-placement="top" title="{{puntuation.observation}}"{% endif %}>{{puntuation.amount}}</span></td>
+                                        <td>
+                                            <span {% if puntuation.observation %}data-bs-toggle="tooltip" data-bs-placement="top" title="{{puntuation.observation}}"{% endif %}>{{puntuation.amount}}</span>
+                                            {% if virtualroom.creator == user or enrollment.rol == 1 %}
+                                            <i class="bi bi-pencil-square text-warning" data-bs-toggle="modal" data-bs-target="#editPuntuation{{puntuation.pk}}"></i>
+                                            <i class="bi bi-trash text-danger" data-bs-toggle="modal" data-bs-target="#deletePuntuation{{puntuation.pk}}"></i>
+                                            <div class="modal fade" id="editPuntuation{{puntuation.pk}}" tabindex="-1" aria-labelledby="editPuntuation{{puntuation.pk}}Label" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editPuntuation{{puntuation.pk}}Label">Editar Puntuación</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{% url 'updatepuntuation' puntuation.pk %}" method="post">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}
+                                                            <div class="mb-3">
+                                                                <label for="amount" class="form-label">Nota</label>
+                                                                <input type="number" min="0" max="100" required class="form-control" required id="amount" name="amount" value="{{puntuation.amount}}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="observation" class="form-label">Observaciones</label>
+                                                                <textarea class="form-control" id="observation" name="observation" rows="2">{{amount.observation}}</textarea>
+                                                            </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-primary">Editar puntuación</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            </div><div class="modal fade" id="deletePuntuation{{puntuation.pk}}" tabindex="-1" aria-labelledby="deletePuntuation{{puntuation.pk}}Label" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deletePuntuation{{puntuation.pk}}Label">Eliminar?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="h6">Esto es irreversible</div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <a href="{% url 'deletepuntuation' puntuation.pk %}" class="btn btn-danger">Si, eliminar</a>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            {% endif %}
+                                            
+                                        </td>
                                         {% endfor %}
                                     {% endif %}
                                     
@@ -300,6 +415,7 @@
 
                             </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -365,7 +481,7 @@
 
      {% endif %}
 </div>
-
+{% if virtualroom.creator == user or enrollment.rol == 1 %}
 <!-- agregar evaluación -->
 <div class="modal fade" id="addEvaluation" tabindex="-1" aria-labelledby="addEvaluationLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -394,6 +510,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 <script>
 var triggerTabList = [].slice.call(document.querySelectorAll('#myTab'))
 triggerTabList.forEach(function (triggerEl) {
