@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{% static 'css/virtualrooms.css' %}">
 {% endblock head_css %}
 
-{% block title %}|{{ virtualroom.name }}{% endblock title %}
+{% block title %}| {{ virtualroom.name }}{% endblock title %}
 
 {% block scripts_tags %}{% endblock scripts_tags %}
 
@@ -99,8 +99,7 @@
             </div>
         </div>
     </div>
-    {% if enrollment or virtualroom.creator == user %}
-    
+    {% if enrollment.state == 3 or virtualroom.creator == user %}
    
     <div class="row">
         <div class="col">
@@ -242,10 +241,12 @@
                             </div>
                        </div>
                     {% endif %}
+                    </div>
+                    <div class="row">
                         {% for participant in participants %}
                             <div class="col-12 col-md-6">
                                 <div class="card">
-                                   <div class="card-body d-flex flex-row align-items-center justify-content-between">
+                                    <div class="card-body d-flex flex-row align-items-center justify-content-between">
                                         <h5 class="card-title">{{ participant.user.first_name }} {{ participant.user.last_name }}</h5>
                                         <div class="avata d-flex flex-column align-items-center justify-content-betweenr">
                                             <img src="{% if participant.user.information %}{{participant.user.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{user.username}}" class="rounded-circle" width="40" height="40" > 
@@ -277,7 +278,6 @@
                                         {% endif %}
                                         </h6>
                                     </div>
-                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -287,6 +287,7 @@
             </div>
         </div>
     </div>
+</div>
 
      {% endif %}
 </div>
