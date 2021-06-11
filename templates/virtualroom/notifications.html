@@ -35,7 +35,13 @@
                                 <a href="{% url 'setstatusenrolled' element.virtualroom.pk 'accept' element.user.pk  %}" class="btn btn-primary">Aceptar</a>
                                 <a href="{% url 'setstatusenrolled' element.virtualroom.pk 'cancel' element.user.pk  %}" class="btn btn-danger">No aceptar</a>
                             {% else %}
+                                {% if element.state == 1 %}
+                                <a href="{% url 'setstatusenrolled' element.virtualroom.pk 'accept' element.user.pk  %}" class="btn btn-primary">Aceptar</a>
+                                <a href="{% url 'setstatusenrolled' element.virtualroom.pk 'cancel' element.user.pk %}" class="btn btn-danger">No aceptar</a>
+                                {% else %}
                                 <a href="{% url 'setstatusenrolled' element.virtualroom.pk 'cancel' element.user.pk %}" class="btn btn-danger">Cancelar solicitud</a>
+                                {% endif %}
+                                
                             {% endif %}
                             
                         </div>

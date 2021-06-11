@@ -85,7 +85,7 @@ def virtual_room_search(request):
 @login_required
 def virtual_room_notifications(request):
     pending_me = Enrollment.objects.filter(Q(virtualroom__creator = request.user) & Q(state = EnrollmentStatus.TEACHER_PENDING)).all()
-    pending = Enrollment.objects.filter(Q(user = request.user) & Q(state = EnrollmentStatus.TEACHER_PENDING)).all()
+    pending = Enrollment.objects.filter(Q(user = request.user) & Q(state = EnrollmentStatus.USER_PENDING)).all()
     context = {
         "pendings_me" : pending_me,
         "pendings" : pending,
@@ -155,6 +155,10 @@ def set_status_enrolled(request, pk, option, pk_user):
         enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user), state = EnrollmentStatus.TEACHER_PENDING)
         enroll.save()
         content = "solicitada"
+    if option == "enroll-pls":
+        enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user), state = EnrollmentStatus.USER_PENDING)
+        enroll.save()
+        content = "solicitada"
     
     else:
         enroll = Enrollment.objects.get(virtualroom = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user))
@@ -184,3 +188,42 @@ def set_status_enrolled(request, pk, option, pk_user):
         enroll.save()
     messages.success(request, f"La inscripción a la clase ha sido {content} satisfactioramente." )
     return redirect("virtualroomdetail", pk=pk)
+
+@login_required
+def virtual_room_enroll(request, pk):
+    vr = VirtualRoom.objects.get(pk=pk)
+    context = {
+        "virtualroom": vr,
+        
+    }
+    enrollment = Enrollment.objects.filter(user=request.user, virtualroom= vr).first()
+    if request.user == vr.creator:
+        context["enrollmentStatus"] = "Gestionar"
+    elif not enrollment:
+        context["enrollmentStatus"] = "No matriculado"
+    elif enrollment.state == EnrollmentStatus.ACCEPTED:
+        context["enrollmentStatus"] = "Ya eres miembro"
+    elif enrollment.state == EnrollmentStatus.DISMISSED:
+        context["enrollmentStatus"] = "Solicitud rechazada"
+    elif enrollment.state == EnrollmentStatus.TEACHER_PENDING:
+        context["enrollmentStatus"] = "Solicitud pendiente de que la acepten"
+    elif enrollment.state == EnrollmentStatus.USER_PENDING:
+        context["enrollmentStatus"] = "Solicitud pendiente de que la aceptes"
+    elif enrollment.state == EnrollmentStatus.EXPELLED:
+        context["enrollmentStatus"] = "Expulsado del grupo"
+    elif enrollment.state == EnrollmentStatus.RETIRED:
+        context["enrollmentStatus"] = "Abandonastes del grupo"
+    else:
+        context["enrollmentStatus"] = "Algo extraño pasó, revisa por favor."
+    
+    context["enrollment"] = enrollment
+    if request.method == "POST":
+        search = request.POST.get("search")
+        results = User.objects.filter(Q(username__icontains= search) | Q(first_name__icontains=search) | Q(last_name__icontains=search)).all()
+        userWithoutEnrolled = []
+        for result in results:
+            if not result.enrollments.filter(virtualroom = vr):
+                userWithoutEnrolled.append(result)
+
+        context["resultsSearch"] = userWithoutEnrolled
+    return render(request, "virtualroom/search_students.html", context)

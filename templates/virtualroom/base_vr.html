@@ -1,0 +1,129 @@
+{% extends 'base_ws.html' %}
+{% load bootstrap5 %}
+{% load static %}
+{% load filename %}
+{% load evaluations_by_student %}
+
+{% block head_css %}
+<link rel="stylesheet" href="{% static 'css/virtualrooms.css' %}">
+{% endblock head_css %}
+
+{% block title %}| {{ virtualroom.name }}{% endblock title %}
+
+{% block scripts_tags %}{% endblock scripts_tags %}
+
+{% block element_nav %}
+
+<!-- Button trigger modal -->
+{% if virtualroom.creator == user or enrollment.rol == 1 %}
+
+<a class="nav_link" data-bs-toggle="modal" data-bs-target="#addSection">
+  <i class='bx bx-message-square-add bx-sm'></i> <span class="nav_name">Crear sección</span>
+</a>
+<a class="nav_link" href="{% url 'virtualroomenroll' virtualroom.pk %}">
+  <i class='bx bx-user-plus bx-sm'></i> <span class="nav_name">Inscribir estudiantes</span>
+</a>
+{% endif %}
+
+{% endblock element_nav %}
+
+{% block content %}
+{% if virtualroom.creator == user or enrollment.rol == 1 %}
+<div class="modal fade" id="addSection" tabindex="-1" aria-labelledby="addSectionLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSectionLabel">Crear sección</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <form action="{% url 'createseccion' %}" method="post">
+      <div class="modal-body">
+            <div class="mb-3">
+            {% csrf_token %}
+                <input type="hidden" name="pk_vr" value="{{virtualroom.pk}}">
+                <label for="name" class="form-label">Nombre de la sección</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear sección</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-dark text-white">
+                <img src="{{ virtualroom.photo.url }}" class="card-img" alt="virtualroom.name" height="250">
+                <div class="card-img-overlay">
+                    <h5 class="card-title">{{ virtualroom.name }}</h5>
+                    <p class="card-text">{{ virtualroom.description }}.</p>
+                    <p class="card-text">Creado el: {{ virtualroom.creation_date }}</p>
+                    <p class="card-text">Creado por: {{ virtualroom.creator }}</p>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="dropdown">
+                        <button class="btn bg-primario text-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{enrollmentStatus}}
+                        </button>
+                        {% if virtualroom.creator == user %}
+                        <ul class="dropdown-menu" aria-labelledby="virtualroomsoptions">
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_update' virtualroom.pk %}">Editar</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_archive' virtualroom.pk %}">{% if archived %}Desarchivar{% else %}Archivar{% endif %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroom_delete' virtualroom.pk %}">Eliminar</a></li>
+                        </ul>
+                        {% elif enrollmentStatus == "No matriculado" %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enroll' user.pk %}">Enviar solicitud</a></li>
+                            </ul>
+                        {% elif enrollmentStatus == "Ya eres miembro"  %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'retired' user.pk %}">Abandonar el grupo</a></li>
+                            </ul>
+                        {% elif  enrollmentStatus == "Solicitud rechazada" or enrollmentStatus == "Abandonastes del grupo"  %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'enrollagain' user.pk %}">Enivar la solicitud otra vez</a></li>
+                            </ul>
+                        {% elif  enrollmentStatus == "Expulsado del grupo" %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>XD (espera a que te inviten)</li>
+                            </ul>
+                        {% elif enrollmentStatus == "Solicitud pendiente de que la acepten"  %}
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' virtualroom.pk 'cancel' user.pk %}">Cancelar</a></li>
+                            </ul>
+                        {% endif %}
+                        </div>                  
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if enrollment.state == 3 or virtualroom.creator == user %}
+   
+    {% block content_only_enrollments %}{% endblock content_only_enrollments %}
+
+     {% endif %}
+</div>
+
+<script>
+var triggerTabList = [].slice.call(document.querySelectorAll('#myTab'))
+triggerTabList.forEach(function (triggerEl) {
+  var tabTrigger = new bootstrap.Tab(triggerEl)
+
+  triggerEl.addEventListener('click', function (event) {
+    event.preventDefault()
+    tabTrigger.show()
+  })
+})
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>
+{% endblock content %}
+
