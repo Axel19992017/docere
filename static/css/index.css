@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Mate+SC&display=swap");
 .bg-primario {
   background-color: var(--primary) !important;
 }
@@ -36,6 +37,14 @@
 
 .text-claro {
   color: var(--claro) !important;
+}
+
+.text-claro:hover {
+  color: white !important;
+}
+
+.titulo {
+  font-family: "Mate SC", serif;
 }
 
 /*# sourceMappingURL=index.css.map */

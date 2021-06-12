@@ -2,6 +2,8 @@
 {% load static %}
 {% block head_css %}
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+<link href='https://unpkg.com/boxicons@2.0.7/dist/boxicons.js' rel='stylesheet'>
 {% endblock head_css %}
 
 {% block title %}:D{% endblock title %}
@@ -10,7 +12,52 @@
 
 {% block content %}
 <div class="container">
-<h1>Inicio :D</h1>
+    <div class="row">
+        <div class="col-12 titulo m-3 bg-primario text-claro">
+            <h2 class="text-center w-100 p-5"><i class='bx bxs-pencil bx-tada' ></i>Docere</h2>
+            
+            <h4 class="text-center">Una página web dedicada para los profesores y estudiantes que son estudiantes y profesores.</h4>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h4>Objetivos de la página web:</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">1. Gestionar el proceso de inscripción y evaluación de estudiantes en asignaturas virtuales.</div>
+        <div class="col-12 col-md-6">2. Gestionar el proceso de seguimiento de profesores y las asignaturas que imparte.</div>
+    </div>
+    <div class="row m-3 p-3">
+        <div class="col-12"><h5> <i class='bx bxs-message-alt-check bx-tada' ></i>¿Qué puedo hacer en esta página web?</h5></div>
+        <div class="col-12 col-md-6">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Crear clases públicas y privadas</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Editar/Archivar/Eliminar</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>LLevar registros de evaluaciones</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Invitar estudiantes</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Buscar nuevas clases</li>
+            </ul>
+        </div>
+        <div class="col-12 col-md-6">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Subir archivos para las clases</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Ver perfiles de usuarios</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Agregar información personal</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Supervisar usuarios</li>
+                <li class="list-group-item"><i class='bx bxs-tag-alt bx-flashing' ></i>Supervisar clases y evaluaciones</li>
+            </ul>
+        </div>
+    </div>
 </div>
+<footer class="bg-primario text-center text-lg-start text-claro">
+  <!-- Copyright -->
+  <div class="text-center p-3">
+    © 2021 Copyright:
+    <a class="text-claro" href="https://agarciadarce.codes/">Axel garcía</a>
+  </div>
+  <!-- Copyright -->
+</footer>
 {% endblock content %}
 

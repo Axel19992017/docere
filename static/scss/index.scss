@@ -37,3 +37,11 @@
 .text-claro {
     color: var(--claro) !important;
 }
+.text-claro:hover {
+    color: white !important;
+}
+@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
+
+.titulo{
+    font-family: 'Mate SC', serif;
+}

@@ -159,7 +159,7 @@ def set_status_enrolled(request, pk, option, pk_user):
         enroll.save()
         content = "solicitada"
     if option == "enroll-pls":
-        enroll  = Enrollment.objects.get(virtualroom = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user))
+        enroll  = Enrollment.objects.filter(virtualroom = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user))
         if not enroll:
             enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user), state = EnrollmentStatus.USER_PENDING)
             enroll.save()
