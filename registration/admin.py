@@ -12,9 +12,3 @@ class PersonalInformationAdmin(admin.ModelAdmin):
         super(PersonalInformationAdmin, self).__init__(model, admin_site)
 
 admin.site.register(PersonalInformation, PersonalInformationAdmin)
-
-# https://stackoverflow.com/questions/10543032/how-to-show-all-fields-of-model-in-admin-page/18774202
-MySpecialAdmin = lambda model: type('SubClass'+model.__name__, (admin.ModelAdmin,), {
-    'list_display': [x.name for x in model._meta.fields],
-    
-})
