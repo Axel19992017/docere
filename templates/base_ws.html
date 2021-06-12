@@ -43,11 +43,11 @@
             <div> 
               <a href="/" class="nav_logo"> <img src="{% static 'logo.svg' %}" alt="Docere" height="20" width="20"> <span class="nav_logo-name">Docere</span> </a>
               <div class="nav_list">
-                <a href="{% url 'virtualrooms' %}" class="nav_link active"> <i class='bx bx-book-alt bx-sm'></i><span class="nav_name">Clases Creadas</span> </a>
-                <a href="{% url 'virtualroomsenrolled' %}" class="nav_link"> <i class='bx bx-pencil bx-sm'></i><span class="nav_name">Clases que llevo</span> </a>
-                <a href="{% url 'virtualroomsarchived' %}" class="nav_link"><i class='bx bx-archive-in bx-sm'></i> <span class="nav_name">Clases archivadas</span> </a> 
-                <a href="{% url 'virtualroomsnotifications' %}" class="nav_link"> <i class='bx bx-bell-plus bx-sm' ></i> <span class="nav_name">Notificaciones</span> </a> 
-                <a href="{% url 'virtualroom_create' %}" class="nav_link"> <i class='bx bx-book-add bx-sm' ></i> <span class="nav_name">Crear clase</span> </a> 
+                <a href="{% url 'virtualroomsnotifications' %}" class="nav_link {% if isactive == 'virtualroomsnotifications' %}active{% endif %}"> <i class='bx bx-bell-plus bx-sm' ></i> <span class="nav_name">Notificaciones</span> </a> 
+                <a href="{% url 'virtualrooms' %}"              class="nav_link {% if isactive == 'virtualrooms' %}active{% endif %}"> <i class='bx bx-book-alt bx-sm'></i><span class="nav_name">Clases Creadas</span> </a>
+                <a href="{% url 'virtualroomsenrolled' %}"      class="nav_link {% if isactive == 'virtualroomsenrolled' %}active{% endif %}"> <i class='bx bx-pencil bx-sm'></i><span class="nav_name">Clases que llevo</span> </a>
+                <a href="{% url 'virtualroom_create' %}"        class="nav_link {% if isactive == 'virtualroom_create' %}active{% endif %}"> <i class='bx bx-book-add bx-sm' ></i> <span class="nav_name">Crear clase</span> </a> 
+                <a href="{% url 'virtualroomsarchived' %}"      class="nav_link {% if isactive == 'virtualroomsarchived' %}active{% endif %}"><i class='bx bx-archive-in bx-sm'></i> <span class="nav_name">Clases archivadas</span> </a> 
                 {% block element_nav %}{% endblock element_nav %}
               </div>
             </div> <a href="{% url 'home' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Regresar</span> </a>

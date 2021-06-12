@@ -25,6 +25,7 @@ def index(request):
         "options": True,
         "title": "Mis clases",
     }
+    context["isactive"] = "virtualrooms"
     return render(request, "virtualroom/dashboard.html", context)
 
 @login_required
@@ -36,6 +37,7 @@ def index_archived(request):
         "options": True,
         "title": "Mis clases archivadas",
     }
+    context["isactive"] = "virtualroomsarchived"
     return render(request, "virtualroom/dashboard.html", context)
 
 @login_required
@@ -52,6 +54,7 @@ def index_enrolled(request):
         "options": False,
         "title": "Clases en las que me matriculé ",
     }
+    context["isactive"] = "virtualroomsenrolled"
     return render(request, "virtualroom/dashboard.html", context)
 
 @login_required
@@ -90,7 +93,7 @@ def virtual_room_notifications(request):
         "pendings_me" : pending_me,
         "pendings" : pending,
     }
-
+    context["isactive"] = "virtualroomsnotifications"
     return render(request, "virtualroom/notifications.html", context)
 
 class VirtualRoomCreate(LoginRequiredMixin, CreateView):
@@ -156,8 +159,13 @@ def set_status_enrolled(request, pk, option, pk_user):
         enroll.save()
         content = "solicitada"
     if option == "enroll-pls":
-        enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user), state = EnrollmentStatus.USER_PENDING)
-        enroll.save()
+        enroll  = Enrollment.objects.get(virtualroom = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user))
+        if not enroll:
+            enroll = Enrollment(virtualroom  = VirtualRoom.objects.get(pk=pk), user=User.objects.get(pk=pk_user), state = EnrollmentStatus.USER_PENDING)
+            enroll.save()
+        else:
+            enroll.state = EnrollmentStatus.USER_PENDING
+            enroll.save()
         content = "solicitada"
     
     else:
@@ -168,7 +176,9 @@ def set_status_enrolled(request, pk, option, pk_user):
         elif option == "retired":
             enroll.state= EnrollmentStatus.RETIRED
             content = "retirada"
-
+        elif option =="expulsed":
+            enroll.state= EnrollmentStatus.EXPELLED
+            content = "retirada por el profesor"
         elif option == "enrollagain":
             enroll.state= EnrollmentStatus.TEACHER_PENDING
             content = "solicitada otra vez"
@@ -219,11 +229,14 @@ def virtual_room_enroll(request, pk):
     context["enrollment"] = enrollment
     if request.method == "POST":
         search = request.POST.get("search")
-        results = User.objects.filter(Q(username__icontains= search) | Q(first_name__icontains=search) | Q(last_name__icontains=search)).all()
+        results = User.objects.filter(Q(username__icontains= search) | Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(email__icontains=search)).all()
         userWithoutEnrolled = []
         for result in results:
-            if not result.enrollments.filter(virtualroom = vr):
+            # verificar que los resultados sean personas que SEAN no matriculadas, expulsadas o que no sean la creadora de la sala virtual
+            
+            if (not result.enrollments.filter(virtualroom = vr) or result.enrollments.filter(virtualroom=vr, state = EnrollmentStatus.EXPELLED)) and not result.virtualroomscreated.filter(pk=pk):
                 userWithoutEnrolled.append(result)
 
         context["resultsSearch"] = userWithoutEnrolled
+    context["isactive"] = "virtualroomenroll"
     return render(request, "virtualroom/search_students.html", context)

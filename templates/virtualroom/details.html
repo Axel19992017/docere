@@ -214,7 +214,7 @@
 
                                 {% for student in virtualroom.enrollments.all %}
                                 <tr>
-                                {% if student.rol == 0 %}
+                                {% if student.rol == 0 and student.state == 3 %}
                                     <th scope="row">
                                     <a class="text-dark" href="{% url 'profile' student.user.pk %}">
                                     @{{student.user.username}}</a></th>
@@ -355,7 +355,7 @@
                                     
                                         {% if participant.virtualroom.creator == user %}
                                     
-                                            <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'retired' participant.user.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Expulsar" id="expulsar">
+                                            <a href="{% url 'setstatusenrolled' participant.virtualroom.pk 'expulsed' participant.user.pk %}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Expulsar" id="expulsar">
                                             <i class="bi bi-slash-circle-fill"></i></a>
                                             
                                         
