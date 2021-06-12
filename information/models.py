@@ -8,13 +8,34 @@ class Section(TimeStamped):
     name = models.CharField(max_length=50, verbose_name="Nombre")
     virtualroom = models.ForeignKey(VirtualRoom, verbose_name="Clase virtual", on_delete=models.CASCADE, related_name="sections", blank=True)
 
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name="Sección"
+        verbose_name_plural ="Secciones"
+
 class Topic(TimeStamped):
     name = models.CharField(max_length=50, verbose_name="Nombre")
     description = models.CharField(max_length=300, verbose_name="Descripción", blank=True)
     section = models.ForeignKey(Section, verbose_name="Sección", related_name="topics", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name="Tema"
+        verbose_name_plural ="Temas"
 class Document(TimeStamped):
     file = models.FileField(upload_to="topics/%Y/%m/%d")
     topic = models.ForeignKey(Topic, verbose_name="archivos", on_delete=models.CASCADE, related_name="documents")
+
+    def __str__(self):
+        return self.file.name
+    
+    class Meta:
+        verbose_name="Documento"
+        verbose_name_plural ="Documentos"
 
 @receiver(post_delete, sender=Document)
 def file_delete(sender, instance, **kwargs):

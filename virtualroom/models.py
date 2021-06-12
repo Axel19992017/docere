@@ -20,6 +20,10 @@ class VirtualRoom(TimeStamped):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Clase virtual"
+        verbose_name_plural = "Clases virtuales"
+
 
 
 @receiver(post_delete, sender=VirtualRoom)
@@ -60,4 +64,8 @@ class Enrollment(TimeStamped):
     rol = models.IntegerField(default=EnrollmentRols.STUDENT,choices=EnrollmentRols.choices)
     
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.user} a {self.virtualroom.name}"
+
+    class Meta:
+        verbose_name="Inscripción"
+        verbose_name_plural="Inscripciones"

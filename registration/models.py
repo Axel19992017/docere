@@ -16,6 +16,10 @@ class PersonalInformation(TimeStamped):
     instagram_link = models.CharField(max_length=50,verbose_name="Instagram", blank=True)
     linkedin_link = models.CharField(max_length=100,verbose_name="Linkedin", blank=True)
 
+    class Meta:
+        verbose_name = "Información del usuario"
+        verbose_name_plural = "Información de los usuarios"
+
 @receiver(post_delete, sender=PersonalInformation)
 def photo_delete(sender, instance, **kwargs):
     instance.photo.delete(False)

@@ -3,8 +3,8 @@ from django.db import models
 
 # https://stackoverflow.com/questions/1737017/django-auto-now-and-auto-now-add/1737078#1737078
 class TimeStamped(models.Model):
-    creation_date = models.DateTimeField(editable=False)
-    last_modified = models.DateTimeField(editable=False)
+    creation_date = models.DateTimeField(editable=False, verbose_name="Fecha de creación")
+    last_modified = models.DateTimeField(editable=False, verbose_name="Última modificación")
 
     def save(self, *args, **kwargs):
         if not self.creation_date:

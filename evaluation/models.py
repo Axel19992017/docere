@@ -12,6 +12,13 @@ class Evaluation(TimeStamped):
     virtualroom = models.ForeignKey(VirtualRoom, related_name="evaluations",verbose_name="Clase", on_delete=models.CASCADE)
     enrollments = models.ManyToManyField(Enrollment, through="Puntuation", verbose_name="Estudiantes", related_name="evaluations")
 
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name="Evaluación"
+        verbose_name_plural ="Evaluaciones"
+
 
 class Puntuation(TimeStamped):
     evaluation = models.ForeignKey(Evaluation, verbose_name="Evaluación",related_name="puntuations", on_delete=models.CASCADE)
@@ -22,4 +29,7 @@ class Puntuation(TimeStamped):
     def __str__(self):
         return f"{self.amount}, por {self.enrollment}"
 
+    class Meta:
+        verbose_name="Puntuación"
+        verbose_name_plural ="Puntuaciones"
 
