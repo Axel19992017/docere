@@ -37,11 +37,16 @@
           <a class="nav-link active" href="{% url 'virtualrooms' %}">
           <i class="bi bi-collection"></i><span class="ms-2">Clases Virtuales</span></a>
         </li>
+        <div class="d-flex mr-auto">
         <li class="nav-item">
           <a class="nav-link active" href="{% url 'myprofile' %}">
           <i class="bi bi-person-circle"></i><span class="ms-2">Mi perfil</span></a>
         </li>
         {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+          <a class="nav-link active" href="/admin">
+          <i class="bi bi-door-open-fill"></i><span class="ms-2">Administrador</span></a>
+        {% endif %}
           <a class="nav-link active" href="{% url 'logout' %}">
           <i class="bi bi-door-open-fill"></i><span class="ms-2">Cerrar sesión</span></a>
           
@@ -52,6 +57,7 @@
           <i class="bi bi-ui-radios"></i><span class="ms-2">Registrase</span></a>
         {% endif %}
         
+        </div>
       </ul>
     </div>
   </div>

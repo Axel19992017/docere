@@ -31,7 +31,11 @@
               {% csrf_token %}
               <input class="form-control me-2" type="search" name="search" required autocomplete="off" placeholder="Buscar clase" aria-label="Buscar">
             </form>
-            <div class="header_img ms-2"><img src="{% if user.information %}{{user.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{user.username}}" class="rounded-circle"alt=""> </div>
+            <div class="header_img ms-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Registrada como @{{user.username}}">
+            <a class="text-dark" href="{% url 'profile' user.pk %}">
+            <img src="{% if user.information %}{{user.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{user.username}}" class="rounded-circle"alt=""> 
+            </a>
+            </div>
           </div>
       </header>
     <div class="l-navbar" id="nav-bar">
@@ -61,6 +65,20 @@
     </div>
     <!--Container Main end-->
 
+<script>
+var triggerTabList = [].slice.call(document.querySelectorAll('#myTab'))
+triggerTabList.forEach(function (triggerEl) {
+  var tabTrigger = new bootstrap.Tab(triggerEl)
 
+  triggerEl.addEventListener('click', function (event) {
+    event.preventDefault()
+    tabTrigger.show()
+  })
+})
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>
 </body>
 </html>

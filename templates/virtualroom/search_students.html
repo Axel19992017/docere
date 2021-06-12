@@ -25,8 +25,8 @@
             <div class="card-body d-flex flex-row align-items-center justify-content-between">
                 <h5 class="card-title">{{ usuario.first_name }} {{ usuario.last_name }}</h5>
                 <div class="avata d-flex flex-column align-items-center justify-content-betweenr">
-                    <img src="{% if usuario.information %}{{usuario.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{user.username}}" class="rounded-circle" width="40" height="40" > 
-                    <h6 class="card-subtitle">@{{ usuario.username }} </h6>
+                    <img src="{% if usuario.information %}{{usuario.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{usuario.username}}" class="rounded-circle" width="40" height="40" > 
+                    <h6 class="card-subtitle"><a href="{% url 'profile' usuario.pk %}" class="text-dark">@{{ usuario.username }}</a></h6>
                     <a href="{% url 'setstatusenrolled' virtualroom.pk 'enroll-pls' usuario.pk %}" class="text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Solicitar ingreso" id="ascender"><i class="bi bi-arrow-up-circle-fill" ></i></a>
                 </div>
             </div>

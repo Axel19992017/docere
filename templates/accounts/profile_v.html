@@ -1,5 +1,5 @@
 {% extends 'base_wn.html' %}
-{% block title %}Mi perfil{% endblock title %}
+{% block title %}| Perfil de {{ user_profile.username }}{% endblock title %}
 
 {% block content %}
 <div class="container">
@@ -10,10 +10,10 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{% if completed %}{{ user.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{ user.username}}" class="rounded-circle" width="150">
+                    <img src="{% if completed %}{{ user_profile.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{ user_profile.username}}" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4>@{{ user.username}}</h4>
-                      <p class="text-secondary mb-1">{% if completed %}{{ user.information.ocupation }}{% endif %}</p>
+                      <h4>@{{ user_profile.username}}</h4>
+                      <p class="text-secondary mb-1">{% if completed %}{{ user_profile.information.ocupation }}{% endif %}</p>
                     </div>
                   </div>
                 </div>
@@ -27,7 +27,7 @@
                       <h6 class="mb-0">Nombre completo</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ user.first_name }} {{ user.last_name}}
+                      {{ user_profile.first_name }} {{ user_profile.last_name}}
                     </div>
                   </div>
                   <hr>
@@ -36,7 +36,7 @@
                       <h6 class="mb-0">Correo</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ user.email }}
+                      {{ user_profile.email }}
                     </div>
                   </div>
                   <hr>
@@ -45,19 +45,21 @@
                       <h6 class="mb-0">Teléfono</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {% if completed %}{{ user.information.phone }}{% endif %}
+                      {% if completed %}{{ user_profile.information.phone }}{% endif %}
                     </div>
                   </div>
                   <hr>
+                  {% if user_profile == user %}
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-primary" href="{% url 'user_update' user.pk %}">Editar mi usuario</a>
+                      <a class="btn btn-primary" href="{% url 'user_update' user_profile.pk %}">Editar mi usuario</a>
                       {% if completed %}
-                      <a class="btn btn-primary" href="{% url 'personalinformation_update' user.information.pk %}">Editar mi información</a>
+                      <a class="btn btn-primary" href="{% url 'personalinformation_update' user_profile.information.pk %}">Editar mi información</a>
                       {% else %}
                       <a class="btn btn-primary" href="{% url 'personalinformation_create' %}">Agregar información</a>
                       {% endif %}
                     </div>
+                  {% endif %}
                   </div>
                 </div>
               </div>
@@ -68,27 +70,27 @@
             <div class="container">
                 <div class="row card d-flex flex-row justify-content-center">
                     <div class="col-2 ">
-                    <a href="{% if completed %}{{ user.information.linkedin_link }}{% endif %}" class="fs-1 text-primary">
+                    <a href="{% if completed %}{{ user_profile.information.linkedin_link }}{% endif %}" class="fs-1 text-primary">
                         <i class="bi bi-linkedin"></i>
                     </a>
                     </div>
                     <div class="col-2">
-                    <a href="{% if completed %}{{ user.information.facebook_link }}{% endif %}" class="fs-1 text-primary">
+                    <a href="{% if completed %}{{ user_profile.information.facebook_link }}{% endif %}" class="fs-1 text-primary">
                         <i class="bi bi-facebook"></i>
                     </a>
                     </div>
                     <div class="col-2">
-                    <a href="{% if completed %}{{ user.information.twitter_link }}{% endif %}" class="fs-1 text-primary">
+                    <a href="{% if completed %}{{ user_profile.information.twitter_link }}{% endif %}" class="fs-1 text-primary">
                         <i class="bi bi-twitter"></i>
                     </a>
                     </div>
                     <div class="col-2">
-                    <a href="{% if completed %}{{ user.information.instagram_link }}{% endif %}" class="fs-1 text-primary">
+                    <a href="{% if completed %}{{ user_profile.information.instagram_link }}{% endif %}" class="fs-1 text-primary">
                         <i class="bi bi-instagram"></i>
                     </a>
                     </div>
                     <div class="col-2">
-                    <a href="{% if completed %}{{ user.information.web_page }}{% endif %}" class="fs-1 text-primary">
+                    <a href="{% if completed %}{{ user_profile.information.web_page }}{% endif %}" class="fs-1 text-primary">
                         <i class="bi bi-link"></i>
                     </a>
                     </div>

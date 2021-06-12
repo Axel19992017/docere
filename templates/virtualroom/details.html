@@ -215,7 +215,9 @@
                                 {% for student in virtualroom.enrollments.all %}
                                 <tr>
                                 {% if student.rol == 0 %}
-                                    <th scope="row">@{{student.user.username}}</th>
+                                    <th scope="row">
+                                    <a class="text-dark" href="{% url 'profile' student.user.pk %}">
+                                    @{{student.user.username}}</a></th>
                                     {% for evaluation in virtualroom.evaluations.all %}
                                     {% if not student|evaluations_by_student:evaluation %}
                                         <td>
@@ -343,7 +345,7 @@
                                         <h5 class="card-title">{{ participant.user.first_name }} {{ participant.user.last_name }}</h5>
                                         <div class="avata d-flex flex-column align-items-center justify-content-betweenr">
                                             <img src="{% if participant.user.information %}{{participant.user.information.photo.url}}{% else %}https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png{% endif %}" alt="{{user.username}}" class="rounded-circle" width="40" height="40" > 
-                                            <h6 class="card-subtitle">@{{ participant.user.username }} </h6>
+                                            <h6 class="card-subtitle"><a href="{% url 'profile' participant.user.pk %}" class="text-dark">@{{ participant.user.username }}</a></h6>
                                         </div>
                                     </div>
                                     <div class="card-body">

@@ -25,6 +25,17 @@ def profile(request):
         context["completed"] = True
     return render(request, "accounts/profile.html", context=context)
 
+def profile_id(request, pk):
+    context = {}
+    user_profile = User.objects.get(pk=pk)
+    if not hasattr(user_profile, "information"):
+        context["completed"] = False
+        messages.warning(request, f"@{user_profile.username} no ha ingresdo su información completa.")
+    else:
+        context["completed"] = True
+    context["user_profile"] = user_profile
+    return render(request, "accounts/profile_v.html", context=context)
+
 
 def register(request):
     if request.method == 'POST':
