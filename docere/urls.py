@@ -20,9 +20,13 @@ from .views import index
 from .settings import MEDIA_ROOT, MEDIA_URL
 from registration.views import profile
 from django.conf.urls.static import static
+from django.conf.urls import url
 
 urlpatterns = [
     path('', index, name="home"),
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
+
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('auth/', include("registration.urls")),
