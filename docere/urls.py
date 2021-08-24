@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import index
 from .settings import MEDIA_ROOT, MEDIA_URL
-from registration.views import profile
+from apps.registration.views import profile
 from django.conf.urls.static import static
 from django.conf.urls import url
 
@@ -29,10 +29,10 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('auth/', include("registration.urls")),
-    path('information/', include("information.urls")),
-    path('virtualroom/', include("virtualroom.urls")),
-    path('evaluation/', include("evaluation.urls")),
+    path('auth/', include("apps.registration.urls")),
+    path('information/', include("apps.information.urls")),
+    path('virtualroom/', include("apps.virtualroom.urls")),
+    path('evaluation/', include("apps.evaluation.urls")),
     path("accounts/profile/", profile, name="myprofile"),
 
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import Document, Topic, Section
 from .forms import TopicModelForm, DocumentModelForm
-from virtualroom.models import VirtualRoom
+from apps.virtualroom.models import VirtualRoom
 from django.contrib import messages
 
 # Create your views here.

@@ -49,10 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'macros',  
     'bootstrap5',
-    'registration.apps.RegistrationConfig',
-    'virtualroom.apps.VirtualroomConfig',
-    'information.apps.InformationConfig',
-    'evaluation.apps.EvaluationConfig',
+    'apps.registration.apps.RegistrationConfig',
+    'apps.virtualroom.apps.VirtualroomConfig',
+    'apps.information.apps.InformationConfig',
+    'apps.evaluation.apps.EvaluationConfig',
 ]
 
 MIDDLEWARE = [

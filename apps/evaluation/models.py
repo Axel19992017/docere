@@ -1,6 +1,6 @@
 from django.db import models
 from docere.models import TimeStamped
-from virtualroom.models import Enrollment, VirtualRoom
+from apps.virtualroom.models import Enrollment, VirtualRoom
 from django.conf import settings
 # Create your models here.
 

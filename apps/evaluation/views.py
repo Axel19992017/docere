@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render
-from virtualroom.models import Enrollment, VirtualRoom
+from apps.virtualroom.models import Enrollment, VirtualRoom
 from .models import Evaluation
 from django.contrib import messages
-from evaluation.models import Puntuation
+from apps.evaluation.models import Puntuation
 
 # Create your views here.
 def create_evaluation(request, pk_vr):

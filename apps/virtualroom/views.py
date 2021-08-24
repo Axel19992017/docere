@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .models import VirtualRoom, VirtualRoomStatus, EnrollmentStatus, EnrollmentRols
-from information.forms import DocumentModelForm, TopicModelForm
+from apps.information.forms import DocumentModelForm, TopicModelForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,7 +12,7 @@ from django.views.generic import (
 )
 from django.urls import reverse_lazy
 from django.contrib import messages
-from virtualroom.models import Enrollment
+from apps.virtualroom.models import Enrollment
 from django.contrib.auth.models import User
 
 # Create your views here.

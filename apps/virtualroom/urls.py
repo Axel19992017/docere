@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import *
-from virtualroom import views
+from apps.virtualroom import views
 from django.conf.urls import url
 
 urlpatterns = [

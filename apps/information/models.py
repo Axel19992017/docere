@@ -1,5 +1,5 @@
 from django.db import models
-from virtualroom.models import *
+from apps.virtualroom.models import *
 from docere.models import TimeStamped
 from django.db.models.signals import post_delete, pre_save
 # Create your models here.
