@@ -7,7 +7,7 @@ from django.dispatch import receiver
 # Create your models here.
 class PersonalInformation(TimeStamped):
     user= models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name="Usuario", related_name="information",on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='users/', verbose_name="Foto", blank=True)
+    photo = models.ImageField(upload_to='media/users/', verbose_name="Foto", blank=True)
     web_page = models.CharField(max_length=50, verbose_name="Página web", blank=True)
     ocupation = models.CharField(max_length=50, verbose_name="Ocupación Actual", blank=True)
     phone = models.CharField(max_length=15, verbose_name="Teléfono Móvil", blank=True)
