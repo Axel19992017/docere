@@ -30,6 +30,12 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=True)
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_URL = env('AWS_URL')
+AWS_S3_REGION_NAME='us-east-2'
+AWS_S3_SIGNATURE_VERSION='s3v4'
 
 ALLOWED_HOSTS = ['*']
 
@@ -54,6 +60,8 @@ INSTALLED_APPS = [
     'apps.virtualroom.apps.VirtualroomConfig',
     'apps.information.apps.InformationConfig',
     'apps.evaluation.apps.EvaluationConfig',
+    'storages',
+
 ]
 
 MIDDLEWARE = [
@@ -208,13 +216,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (root('static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets-root', 'static')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'assets-root', 'media')
+STATIC_URL = AWS_URL + '/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = AWS_URL + '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # STATICFILE_STORAGE = 'whitenoise.django.GzipManifestStaticFileStorage'
 
