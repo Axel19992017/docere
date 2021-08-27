@@ -14,7 +14,9 @@ import sys
 
 from pathlib import Path
 import environ
+import django_heroku
 
+django_heroku.settigns(locals(), staticfiles=False)
 root = environ.Path(start=__file__) - 2
 env = environ.Env()
 env.read_env('.env')

@@ -15,6 +15,7 @@ django-3-jet = {file = "https://github.com/Barukimang/django-jet/archive/dev.zip
 feedparser = "*"
 boto3 = "*"
 django-storages = "*"
+django-heroku = "*"
 
 [dev-packages]
 django-extensions = "*"
