@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'macros',  
     'bootstrap5',
-    'django_extensions',
+    #'django_extensions',
     'apps.registration.apps.RegistrationConfig',
     'apps.virtualroom.apps.VirtualroomConfig',
     'apps.information.apps.InformationConfig',
