@@ -16,7 +16,7 @@ from pathlib import Path
 import environ
 import django_heroku
 
-django_heroku.settigns(locals(), staticfiles=False)
+django_heroku.settings(locals(), staticfiles=False)
 root = environ.Path(start=__file__) - 2
 env = environ.Env()
 env.read_env('.env')
@@ -38,7 +38,7 @@ AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_URL = env('AWS_URL')
 AWS_S3_SIGNATURE_VERSION='s3v4'
 AWS_QUERYSTRING_AUTH=False
-
+DEVELOP = env.bool('DEV', default=True)
 ALLOWED_HOSTS = ['*']
 
 
@@ -63,6 +63,9 @@ INSTALLED_APPS = [
     'apps.information.apps.InformationConfig',
     'apps.evaluation.apps.EvaluationConfig',
     'storages',
+    'rest_framework',
+    'rest_framework_simplejwt',
+
 
 ]
 
@@ -199,7 +202,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# Rest framework
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    )
 
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -226,8 +237,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets-root', 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'assets-root', 'media')
 
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+if not DEVELOP:    
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 # STATICFILE_STORAGE = 'whitenoise.django.GzipManifestStaticFileStorage'

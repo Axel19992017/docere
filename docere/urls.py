@@ -21,6 +21,9 @@ from .settings import MEDIA_ROOT, MEDIA_URL
 from apps.registration.views import profile
 from django.conf.urls.static import static
 from django.conf.urls import url
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView, TokenRefreshView,
+)
 
 urlpatterns = [
     path('', index, name="home"),
@@ -34,6 +37,11 @@ urlpatterns = [
     path('virtualroom/', include("apps.virtualroom.urls")),
     path('evaluation/', include("apps.evaluation.urls")),
     path("accounts/profile/", profile, name="myprofile"),
+
+    # api urls
+    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 
 ]
 
