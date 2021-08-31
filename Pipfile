@@ -16,6 +16,10 @@ feedparser = "*"
 boto3 = "*"
 django-storages = "*"
 django-heroku = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 django-extensions = "*"
