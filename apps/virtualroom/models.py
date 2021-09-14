@@ -15,7 +15,7 @@ class VirtualRoom(TimeStamped):
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Enrollment', verbose_name="Estudiantes", related_name="virtualrooms")
     description = models.CharField(max_length=500, verbose_name="Descripción")
     is_private = models.BooleanField(verbose_name="Es privado")
-    photo = models.ImageField(upload_to='media/virtualrooms/', verbose_name="Foto")
+    photo = models.ImageField(upload_to='virtualrooms/', verbose_name="Foto")
     status = models.IntegerField(default=VirtualRoomStatus.ACTIVE,choices=VirtualRoomStatus.choices, verbose_name="Estado")
     def __str__(self):
         return self.name

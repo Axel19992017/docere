@@ -19,11 +19,20 @@ from django.contrib.auth.models import User
 @login_required
 def index(request):
 
-    classes = VirtualRoom.objects.filter(creator=request.user, status=VirtualRoomStatus.ACTIVE)
+    classes = VirtualRoom.objects.filter(creator=request.user, status=VirtualRoomStatus.ACTIVE).all()
+    classes_created = VirtualRoom.objects.filter(creator=request.user, status=VirtualRoomStatus.ACTIVE).all()
+    classes_archived = VirtualRoom.objects.filter(creator=request.user, status=VirtualRoomStatus.DEACTIVATE).all()
+    enrolleds = request.user.enrollments.filter(state=EnrollmentStatus.ACCEPTED).all()
+    classes_enrolled = []
+    for enroll in enrolleds:
+        classes_enrolled.append(enroll.virtualroom)
     context = {
         "rooms": classes,
+        "rooms_created": classes_created,
+        "rooms_archived": classes_archived,
+        "rooms_enrolled": classes_enrolled,
         "options": True,
-        "title": "Mis clases",
+        "title": "¡Bienvenido a tus clases virtuales!",
     }
     context["isactive"] = "virtualrooms"
     return render(request, "virtualroom/dashboard.html", context)

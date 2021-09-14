@@ -27,7 +27,7 @@ class Topic(TimeStamped):
         verbose_name="Tema"
         verbose_name_plural ="Temas"
 class Document(TimeStamped):
-    file = models.FileField(upload_to="media/topics/%Y/%m/%d")
+    file = models.FileField(upload_to="topics/%Y/%m/%d")
     topic = models.ForeignKey(Topic, verbose_name="archivos", on_delete=models.CASCADE, related_name="documents")
 
     def __str__(self):
