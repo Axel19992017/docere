@@ -21,7 +21,7 @@ markdown = "*"
 django-filter = "*"
 djangorestframework-simplejwt = "*"
 drf-spectacular = "*"
-django-extensions = "*"
+
 
 [dev-packages]
 django-extensions = "*"
