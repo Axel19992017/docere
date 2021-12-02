@@ -1,6 +1,7 @@
 {% extends 'base_ws.html' %}
 {% load bootstrap5 %}
 {% load static %}
+
 {% load filename %}
 {% load evaluations_by_student %}
 
@@ -73,7 +74,10 @@
                         <ul class="dropdown-menu" aria-labelledby="virtualroomsoptions">
                             <li><a class="dropdown-item" href="{% url 'virtualroom_update' virtualroom.pk %}">Editar</a></li>
                             <li><a class="dropdown-item" href="{% url 'virtualroom_archive' virtualroom.pk %}">{% if archived %}Desarchivar{% else %}Archivar{% endif %}</a></li>
+                            <li><a class="dropdown-item" onclick="exportTableToCSV('reports.csv')">Descargar notas</a></li>
+                            <li><a class="dropdown-item" href="{% url 'virtualroomreport' virtualroom.pk %}">Ver notas</a></li>
                             <li><a class="dropdown-item" href="{% url 'virtualroom_delete' virtualroom.pk %}">Eliminar</a></li>
+                            
                         </ul>
                         {% elif enrollmentStatus == "No matriculado" %}
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -109,6 +113,53 @@
 
      {% endif %}
 </div>
+<table class="d-none" id="exportNotes">
+    
+        <tr>
+        <th scope="col">Estudiantes </th>
+        {% for evaluation in virtualroom.evaluations.all %}
+        <th scope="col" >
+        {{evaluation.name}}
+        
+        </th>
+        <th>
+            Comentarios
+        </th>
+        {% endfor %}
+        </tr>
+    
+
+        {% for student in virtualroom.enrollments.all %}
+        <tr>
+        {% if student.rol == 0 and student.state == 3 %}
+            <th scope="row">  {{student.user.first_name}} {{student.user.last_name }}</th>
+            {% for evaluation in virtualroom.evaluations.all %}
+            {% if not student|evaluations_by_student:evaluation %}
+                <td>
+                <div class="alert alert-danger" role="alert">
+                Sin registros 
+               
+                </div>
+                </td>
+              
+            {% else %}
+                {% for puntuation in student|evaluations_by_student:evaluation %}
+                <td>
+                    {{puntuation.amount}}
+                </td>
+                <td>
+                    {{puntuation.observation}}
+                </td>
+                {% endfor %}
+            {% endif %}
+            
+            {% endfor %}
+        {% endif %}
+        </tr>
+        {% endfor %}
+
+    
+    </table>
 
 {% endblock content %}
 

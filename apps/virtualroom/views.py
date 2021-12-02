@@ -27,7 +27,6 @@ def index(request):
     for enroll in enrolleds:
         classes_enrolled.append(enroll.virtualroom)
     context = {
-        "rooms": classes,
         "rooms_created": classes_created,
         "rooms_archived": classes_archived,
         "rooms_enrolled": classes_enrolled,
@@ -159,6 +158,41 @@ def virtual_room_detail(request, pk):
     context["enrollment"] = enrollment
 
     return render(request, "virtualroom/details.html", context)
+
+@login_required
+def virtual_room_report(request, pk):
+    vr = VirtualRoom.objects.get(pk=pk)
+    participants = vr.enrollments.filter(state=EnrollmentStatus.ACCEPTED).all()
+    context = {
+        "virtualroom": vr,
+        "participants": participants
+    }
+    
+    enrollment = Enrollment.objects.filter(user=request.user, virtualroom= vr).first()
+    if request.user == vr.creator:
+        context["enrollmentStatus"] = "Gestionar"
+    elif not enrollment:
+        context["enrollmentStatus"] = "No matriculado"
+    elif enrollment.state == EnrollmentStatus.ACCEPTED:
+        context["enrollmentStatus"] = "Ya eres miembro"
+    elif enrollment.state == EnrollmentStatus.DISMISSED:
+        context["enrollmentStatus"] = "Solicitud rechazada"
+    elif enrollment.state == EnrollmentStatus.TEACHER_PENDING:
+        context["enrollmentStatus"] = "Solicitud pendiente de que la acepten"
+    elif enrollment.state == EnrollmentStatus.USER_PENDING:
+        context["enrollmentStatus"] = "Solicitud pendiente de que la aceptes"
+    elif enrollment.state == EnrollmentStatus.EXPELLED:
+        context["enrollmentStatus"] = "Expulsado del grupo"
+    elif enrollment.state == EnrollmentStatus.RETIRED:
+        context["enrollmentStatus"] = "Abandonastes del grupo"
+    else:
+        context["enrollmentStatus"] = "Algo extraño pasó, revisa por favor."
+    
+    context["formAddTopic"] = TopicModelForm
+    context["formAddTopicFields"] = DocumentModelForm
+    context["enrollment"] = enrollment
+
+    return render(request, "virtualroom/report.html", context)
 
 @login_required 
 def set_status_enrolled(request, pk, option, pk_user):

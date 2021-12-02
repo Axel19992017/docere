@@ -18,7 +18,10 @@
         </div>
     </div>
     <div class="row">
-    {% if not rooms %}
+        <div class="col-12">
+            <h2>Clases creadas</h2>
+        </div>
+    {% if not rooms_created %}
         <div class="col-12">
             <div class="alert alert-danger d-flex align-items-center" role="alert">
             <i class="bi bi-exclamation-lg"></i>
@@ -28,7 +31,7 @@
             </div>
         </div>
     {% endif %}
-    {% for room in rooms %}
+    {% for room in rooms_created %}
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
                 <img src="{{room.photo.url}}" class="card-img-top" alt="{{ room.name }}">
@@ -44,6 +47,46 @@
                                 <li><a class="dropdown-item" href="{% url 'virtualroom_update' room.pk %}">Editar</a></li>
                                 <li><a class="dropdown-item" href="{% url 'virtualroom_archive' room.pk %}">{% if archived %}Desarchivar{% else %}Archivar{% endif %}</a></li>
                                 <li><a class="dropdown-item" href="{% url 'virtualroom_delete' room.pk %}">Eliminar</a></li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="card-text">{{ room.description }}</p>
+                    <a href="{% url 'virtualroomdetail' room.pk %}" class="btn btn-primary">Ir a la clase</a>
+                </div>
+                </div>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="row">
+    <div class="col-12">
+        <h2>Clases Inscritas</h2>
+    </div>
+    {% if not rooms_enrolled %}
+        <div class="col-12">
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-lg"></i>
+            <div>
+                Por el momento no tenemos nada que mostrar aquí :D
+            </div>
+            </div>
+        </div>
+    {% endif %}
+    {% for room in rooms_enrolled %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+                <img src="{{room.photo.url}}" class="card-img-top" alt="{{ room.name }}">
+                <div class="card-body">
+                    <div class="encabezado">
+                        <h5 class="card-title">{{ room.name }}</h5>
+                        {% if options %}
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="virtualroomsoptions" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="virtualroomsoptions">
+                                <li><a class="dropdown-item" href="{% url 'setstatusenrolled' room.pk 'retired' user.pk %}">Abandonar el grupo</a></li>
                             </ul>
                         </div>
                         {% endif %}

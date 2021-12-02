@@ -1,0 +1,95 @@
+{% extends 'virtualroom/base_vr.html' %}
+{% load bootstrap5 %}
+{% load static %}
+{% load filename %}
+{% load evaluations_by_student %}
+
+{% block content_only_enrollments %}
+  
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+        <table class="table align-middle">
+        <thead>
+            <tr>
+            <th scope="col">Estudiantes </th>
+            {% for evaluation in virtualroom.evaluations.all %}
+            <th scope="col" >
+            {{evaluation.name}}
+            
+            </th>
+            <th>
+                Comentarios
+            </th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for student in virtualroom.enrollments.all %}
+            <tr>
+            {% if student.rol == 0 and student.state == 3 %}
+                <th scope="row">  {{student.user.first_name}} {{student.user.last_name }}</th>
+                {% for evaluation in virtualroom.evaluations.all %}
+                {% if not student|evaluations_by_student:evaluation %}
+                    <td>
+                    <div class="alert alert-danger" role="alert">
+                    Sin registros 
+                   
+                    </div>
+                    </td>
+                  
+                {% else %}
+                    {% for puntuation in student|evaluations_by_student:evaluation %}
+                    <td>
+                        {{puntuation.amount}}
+                    </td>
+                    <td>
+                        {{puntuation.observation}}
+                    </td>
+                    {% endfor %}
+                {% endif %}
+                
+                {% endfor %}
+            {% endif %}
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+               
+{% if virtualroom.creator == user or enrollment.rol == 1 %}
+<!-- agregar evaluación -->
+<div class="modal fade" id="addEvaluation" tabindex="-1" aria-labelledby="addEvaluationLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEvaluationLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{% url 'createevaluation' virtualroom.pk %}" method="post">
+      <div class="modal-body">
+        {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre de la evaluación</label>
+                <input type="text" class="form-control" required id="name" name="name">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear evaluación</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock content_only_enrollments %}

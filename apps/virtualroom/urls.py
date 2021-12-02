@@ -10,6 +10,7 @@ urlpatterns = [
     path('search', virtual_room_search, name="virtualroomsearch"),
     path('notifications', virtual_room_notifications, name="virtualroomsnotifications"),
     path('<int:pk>/details', virtual_room_detail, name="virtualroomdetail"),
+    path('<int:pk>/reports', virtual_room_report, name="virtualroomreport"),
     path('<int:pk>/search', virtual_room_enroll, name="virtualroomenroll"),
     path('<int:pk>/<str:option>/<int:pk_user>', set_status_enrolled, name="setstatusenrolled"),
 ]
